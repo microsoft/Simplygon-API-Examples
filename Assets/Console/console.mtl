@@ -1,0 +1,29 @@
+# Blender MTL File: 'None'
+# Material Count: 2
+
+newmtl demoscene_2014_009_display_sh
+Ns 6.311795
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump console_textures\\display_n.png
+map_Kd console_textures\\display_c.png
+map_Ks console_textures\\display_s.png
+
+newmtl demoscene_2014_009_glas
+Ns 299.999989
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.500000 0.500000 0.500000
+Ke 0.000000 0.000000 0.000000
+Ni 1.450000
+d 1.000000
+illum 2
+map_Bump console_textures\\stand_n.png
+map_Kd console_textures\\stand_c.png
+map_Ks console_textures\\stand_s.png
+map_d console_textures\\stand_c.png
