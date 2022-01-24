@@ -1,0 +1,64 @@
+newmtl armsSG1
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ns 30.000000
+map_Kd dman_arms_d.JPG
+map_Ks dman_arms_spec.JPG
+bump dman_arms_n.JPG
+newmtl body_upperSG1
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ns 30.000000
+map_Kd dman_armor_upper_d.JPG
+map_Ks dman_armor_upper_spec.JPG
+bump dman_armor_upper_n.JPG
+newmtl clothSG1
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ns 5.000000
+map_Kd dman_baselayer_d.JPG
+map_Ks dman_baselayer_spec.JPG
+bump dman_baselayer_n.JPG
+newmtl helmetSG
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ns 30.000000
+map_Kd dman_helmet_d.JPG
+map_Ks dman_helmet_spec.JPG
+bump dman_helmet_n.JPG
+newmtl helmetSG1
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ns 30.000000
+map_Kd dman_helmet_d.JPG
+map_Ks dman_helmet_spec.JPG
+bump dman_helmet_n.JPG
+newmtl helmet_visorSG1
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ns 30.000000
+map_Kd dman_visor_mask_d.JPG
+map_Ks dman_visor_mask_spec.JPG
+bump dman_visor_mask_n.JPG
+newmtl legsSG1
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ns 30.000000
+map_Kd dman_legs_logo2.0_d.JPG
+map_Ks dman_legs_logo2.0_s.JPG
+bump dman_legs_logo2.0_n.JPG
+newmtl middleSG1
+Ka 0.000000 0.000000 0.000000
+Kd 1.000000 1.000000 1.000000
+Ks 1.000000 1.000000 1.000000
+Ns 30.000000
+map_Kd dman_armor_middle_logo2_d.JPG
+map_Ks dman_armor_middle_logo2_s.JPG
+bump dman_armor_middle_logo2_n.JPG
