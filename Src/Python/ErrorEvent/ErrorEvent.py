@@ -9,8 +9,8 @@ import gc
 import threading
 
 from pathlib import Path
-from simplygon import simplygon_loader
-from simplygon import Simplygon
+from simplygon9 import simplygon_loader
+from simplygon9 import Simplygon
 
 class CustomErrorHandler(Simplygon.ErrorHandler):
     def HandleError(self, object: Simplygon.spObject, interfaceName: str, methodName: str, errorType: int, errorText: str):

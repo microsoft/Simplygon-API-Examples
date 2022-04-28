@@ -9,8 +9,8 @@ import gc
 import threading
 
 from pathlib import Path
-from simplygon import simplygon_loader
-from simplygon import Simplygon
+from simplygon9 import simplygon_loader
+from simplygon9 import Simplygon
 
 
 def SaveScene(sg: Simplygon.ISimplygon, sgScene:Simplygon.spScene, path: str):

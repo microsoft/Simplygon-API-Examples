@@ -9,8 +9,8 @@ import gc
 import threading
 
 from pathlib import Path
-from simplygon import simplygon_loader
-from simplygon import Simplygon
+from simplygon9 import simplygon_loader
+from simplygon9 import Simplygon
 
 class CustomObserver(Simplygon.Observer):
     def OnProgress(self, subject: Simplygon.spObject, progressPercent: float):
