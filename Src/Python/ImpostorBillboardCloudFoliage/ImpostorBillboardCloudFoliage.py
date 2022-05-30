@@ -125,6 +125,8 @@ def RunBillboardCloudFoliage(sg: Simplygon.ISimplygon):
 
     sgDiffuseCasterSettings = sgDiffuseCaster.GetColorCasterSettings()
     sgDiffuseCasterSettings.SetMaterialChannel( 'Diffuse' )
+    sgDiffuseCasterSettings.SetOpacityChannel( "Opacity" )
+    sgDiffuseCasterSettings.SetOpacityChannelComponent( Simplygon.EColorComponent_Alpha )
     sgDiffuseCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
     sgDiffuseCasterSettings.SetBakeOpacityInAlpha( False )
     sgDiffuseCasterSettings.SetOutputPixelFormat( Simplygon.EPixelFormat_R8G8B8 )
@@ -144,6 +146,8 @@ def RunBillboardCloudFoliage(sg: Simplygon.ISimplygon):
 
     sgSpecularCasterSettings = sgSpecularCaster.GetColorCasterSettings()
     sgSpecularCasterSettings.SetMaterialChannel( 'Specular' )
+    sgSpecularCasterSettings.SetOpacityChannel( "Opacity" )
+    sgSpecularCasterSettings.SetOpacityChannelComponent( Simplygon.EColorComponent_Alpha )
     sgSpecularCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
     sgSpecularCasterSettings.SetDilation( 10 )
     sgSpecularCasterSettings.SetFillMode( Simplygon.EAtlasFillMode_Interpolate )
@@ -162,6 +166,8 @@ def RunBillboardCloudFoliage(sg: Simplygon.ISimplygon):
     sgNormalsCasterSettings = sgNormalsCaster.GetNormalCasterSettings()
     sgNormalsCasterSettings.SetMaterialChannel( 'Normals' )
     sgNormalsCasterSettings.SetGenerateTangentSpaceNormals( True )
+    sgNormalsCasterSettings.SetOpacityChannel( "Opacity" )
+    sgNormalsCasterSettings.SetOpacityChannelComponent( Simplygon.EColorComponent_Alpha )
     sgNormalsCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
     sgNormalsCasterSettings.SetOutputPixelFormat( Simplygon.EPixelFormat_R8G8B8 )
     sgNormalsCasterSettings.SetDilation( 10 )
@@ -180,6 +186,8 @@ def RunBillboardCloudFoliage(sg: Simplygon.ISimplygon):
 
     sgOpacityCasterSettings = sgOpacityCaster.GetOpacityCasterSettings()
     sgOpacityCasterSettings.SetMaterialChannel( 'Opacity' )
+    sgOpacityCasterSettings.SetOpacityChannel( "Opacity" )
+    sgOpacityCasterSettings.SetOpacityChannelComponent( Simplygon.EColorComponent_Alpha )
     sgOpacityCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
     sgOpacityCasterSettings.SetDilation( 0 )
     sgOpacityCasterSettings.SetFillMode( Simplygon.EAtlasFillMode_NoFill )

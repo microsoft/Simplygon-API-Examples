@@ -95,10 +95,15 @@ void RunImpostorFromSingleView(Simplygon::ISimplygon* sg)
 	Simplygon::spScene sgScene = LoadScene(sg, "../../../Assets/Bush/Bush.fbx");
 	
 	// For all materials in the scene set the blend mode to blend (instead of opaque) 
-	int materialCount = (int)sgScene->GetMaterialTable()->GetMaterialsCount();
-	for (int i = 0; i < materialCount; ++i)
+	for (int i = 0; i < (int)sgScene->GetMaterialTable()->GetMaterialsCount(); ++i)
 	{
 		sgScene->GetMaterialTable()->GetMaterial(i)->SetBlendMode(Simplygon::EMaterialBlendMode::Blend);
+	}
+	
+	// For all materials in the scene set the opacity mode to Opacity. 
+	for (int i = 0; i < (int)sgScene->GetMaterialTable()->GetMaterialsCount(); ++i)
+	{
+		sgScene->GetMaterialTable()->GetMaterial(i)->SetOpacityType(Simplygon::EOpacityType::Opacity);
 	}
 	
 	// Create the Impostor processor. 
@@ -145,6 +150,8 @@ void RunImpostorFromSingleView(Simplygon::ISimplygon* sg)
 
 	Simplygon::spColorCasterSettings sgDiffuseCasterSettings = sgDiffuseCaster->GetColorCasterSettings();
 	sgDiffuseCasterSettings->SetMaterialChannel( "Diffuse" );
+	sgDiffuseCasterSettings->SetOpacityChannel( "Opacity" );
+	sgDiffuseCasterSettings->SetOpacityChannelComponent( Simplygon::EColorComponent::Alpha );
 	sgDiffuseCasterSettings->SetOutputImageFileFormat( Simplygon::EImageOutputFormat::PNG );
 	sgDiffuseCasterSettings->SetBakeOpacityInAlpha( false );
 	sgDiffuseCasterSettings->SetOutputPixelFormat( Simplygon::EPixelFormat::R8G8B8 );
@@ -164,6 +171,8 @@ void RunImpostorFromSingleView(Simplygon::ISimplygon* sg)
 
 	Simplygon::spColorCasterSettings sgSpecularCasterSettings = sgSpecularCaster->GetColorCasterSettings();
 	sgSpecularCasterSettings->SetMaterialChannel( "Specular" );
+	sgSpecularCasterSettings->SetOpacityChannel( "Opacity" );
+	sgSpecularCasterSettings->SetOpacityChannelComponent( Simplygon::EColorComponent::Alpha );
 	sgSpecularCasterSettings->SetOutputImageFileFormat( Simplygon::EImageOutputFormat::PNG );
 	sgSpecularCasterSettings->SetDilation( 10 );
 	sgSpecularCasterSettings->SetFillMode( Simplygon::EAtlasFillMode::Interpolate );
@@ -181,6 +190,8 @@ void RunImpostorFromSingleView(Simplygon::ISimplygon* sg)
 
 	Simplygon::spNormalCasterSettings sgNormalsCasterSettings = sgNormalsCaster->GetNormalCasterSettings();
 	sgNormalsCasterSettings->SetMaterialChannel( "Normals" );
+	sgNormalsCasterSettings->SetOpacityChannel( "Opacity" );
+	sgNormalsCasterSettings->SetOpacityChannelComponent( Simplygon::EColorComponent::Alpha );
 	sgNormalsCasterSettings->SetGenerateTangentSpaceNormals( true );
 	sgNormalsCasterSettings->SetOutputImageFileFormat( Simplygon::EImageOutputFormat::PNG );
 	sgNormalsCasterSettings->SetDilation( 10 );
@@ -199,6 +210,8 @@ void RunImpostorFromSingleView(Simplygon::ISimplygon* sg)
 
 	Simplygon::spOpacityCasterSettings sgOpacityCasterSettings = sgOpacityCaster->GetOpacityCasterSettings();
 	sgOpacityCasterSettings->SetMaterialChannel( "Opacity" );
+	sgOpacityCasterSettings->SetOpacityChannel( "Opacity" );
+	sgOpacityCasterSettings->SetOpacityChannelComponent( Simplygon::EColorComponent::Alpha );
 	sgOpacityCasterSettings->SetOutputImageFileFormat( Simplygon::EImageOutputFormat::PNG );
 	sgOpacityCasterSettings->SetDilation( 0 );
 	sgOpacityCasterSettings->SetFillMode( Simplygon::EAtlasFillMode::NoFill );

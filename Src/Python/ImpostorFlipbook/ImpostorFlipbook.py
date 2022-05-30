@@ -77,6 +77,11 @@ def RunFlipbook(sg: Simplygon.ISimplygon):
     for i in range(0, materialCount):
         sgScene.GetMaterialTable().GetMaterial(i).SetBlendMode(Simplygon.EMaterialBlendMode_Blend)
     
+    # For all materials in the scene set the opacity mode to Opacity. 
+    materialCount = sgScene.GetMaterialTable().GetMaterialsCount()
+    for i in range(0, materialCount):
+        sgScene.GetMaterialTable().GetMaterial(i).SetOpacityType(Simplygon.EOpacityType_Opacity)
+    
     # Create the Impostor processor. 
     sgImpostorProcessor = sg.CreateImpostorProcessor()
     sgImpostorProcessor.SetScene( sgScene )
@@ -116,6 +121,8 @@ def RunFlipbook(sg: Simplygon.ISimplygon):
 
     sgDiffuseCasterSettings = sgDiffuseCaster.GetColorCasterSettings()
     sgDiffuseCasterSettings.SetMaterialChannel( 'Diffuse' )
+    sgDiffuseCasterSettings.SetOpacityChannel( "Opacity" )
+    sgDiffuseCasterSettings.SetOpacityChannelComponent( Simplygon.EColorComponent_Alpha )
     sgDiffuseCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
     sgDiffuseCasterSettings.SetBakeOpacityInAlpha( False )
     sgDiffuseCasterSettings.SetOutputPixelFormat( Simplygon.EPixelFormat_R8G8B8 )
@@ -135,6 +142,8 @@ def RunFlipbook(sg: Simplygon.ISimplygon):
 
     sgSpecularCasterSettings = sgSpecularCaster.GetColorCasterSettings()
     sgSpecularCasterSettings.SetMaterialChannel( 'Specular' )
+    sgSpecularCasterSettings.SetOpacityChannel( "Opacity" )
+    sgSpecularCasterSettings.SetOpacityChannelComponent( Simplygon.EColorComponent_Alpha )
     sgSpecularCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
     sgSpecularCasterSettings.SetDilation( 10 )
     sgSpecularCasterSettings.SetFillMode( Simplygon.EAtlasFillMode_Interpolate )
@@ -152,6 +161,8 @@ def RunFlipbook(sg: Simplygon.ISimplygon):
 
     sgNormalsCasterSettings = sgNormalsCaster.GetNormalCasterSettings()
     sgNormalsCasterSettings.SetMaterialChannel( 'Normals' )
+    sgNormalsCasterSettings.SetOpacityChannel( "Opacity" )
+    sgNormalsCasterSettings.SetOpacityChannelComponent( Simplygon.EColorComponent_Alpha )
     sgNormalsCasterSettings.SetGenerateTangentSpaceNormals( True )
     sgNormalsCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
     sgNormalsCasterSettings.SetDilation( 10 )
@@ -170,6 +181,8 @@ def RunFlipbook(sg: Simplygon.ISimplygon):
 
     sgOpacityCasterSettings = sgOpacityCaster.GetOpacityCasterSettings()
     sgOpacityCasterSettings.SetMaterialChannel( 'Opacity' )
+    sgOpacityCasterSettings.SetOpacityChannel( "Opacity" )
+    sgOpacityCasterSettings.SetOpacityChannelComponent( Simplygon.EColorComponent_Alpha )
     sgOpacityCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
     sgOpacityCasterSettings.SetDilation( 0 )
     sgOpacityCasterSettings.SetFillMode( Simplygon.EAtlasFillMode_NoFill )

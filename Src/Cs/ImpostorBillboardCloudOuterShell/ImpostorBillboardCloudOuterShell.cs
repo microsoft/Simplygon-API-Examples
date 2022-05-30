@@ -91,8 +91,7 @@ public class Program
         Simplygon.spScene sgScene = LoadScene(sg, "../../../Assets/Cages/Cages.obj");
         
         // For all materials in the scene set the blend mode to blend (instead of opaque) 
-        int materialCount = (int)sgScene.GetMaterialTable().GetMaterialsCount();
-        for (int i = 0; i < materialCount; ++i)
+        for (int i = 0; i < (int)sgScene.GetMaterialTable().GetMaterialsCount(); ++i)
         {
             sgScene.GetMaterialTable().GetMaterial(i).SetBlendMode(Simplygon.EMaterialBlendMode.Blend);
         }
