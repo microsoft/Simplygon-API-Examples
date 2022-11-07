@@ -83,7 +83,7 @@ void RunReduction(Simplygon::ISimplygon* sg)
 	
 	// Start the reduction pipeline and the faulty settings will cause an error. 	
 	printf("%s\n", "Start the reduction pipeline and the faulty settings will cause an error.");
-	sgReductionPipeline->RunSceneFromFile("../../../Assets/SimplygonMan/SimplygonMan.obj", "output.fbx", Simplygon::EPipelineRunMode::RunInNewProcess);
+	sgReductionPipeline->RunSceneFromFile("../../../Assets/SimplygonMan/SimplygonMan.obj", "Output.fbx", Simplygon::EPipelineRunMode::RunInNewProcess);
 	
 	// Check log for any warnings or errors. 	
 	printf("%s\n", "Check log for any warnings or errors.");

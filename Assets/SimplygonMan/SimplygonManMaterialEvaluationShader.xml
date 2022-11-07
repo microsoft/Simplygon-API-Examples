@@ -1,0 +1,5 @@
+<MaterialEvaluationShader Version="1.0">
+<Attribute Name="TEXCOORD0" FieldFormat="F32vec2" FieldType="TexCoords" />
+<EvaluationFunction Channel="Diffuse" EntryPoint="Diffuse"/>
+<ShaderParameterSampler Name="DiffuseTexture" TextureName="ReplaceMe" />
+</MaterialEvaluationShader>

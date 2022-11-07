@@ -9,19 +9,20 @@ import gc
 import threading
 
 from pathlib import Path
-from simplygon9 import simplygon_loader
-from simplygon9 import Simplygon
+from simplygon10 import simplygon_loader
+from simplygon10 import Simplygon
 
 
-def SaveScene(sg: Simplygon.ISimplygon, sgScene:Simplygon.spScene, path: str):
+def SaveScene(sg: Simplygon.ISimplygon, sgScene: Simplygon.spScene, path: str):
     # Create scene exporter. 
     sgSceneExporter = sg.CreateSceneExporter()
-    sgSceneExporter.SetExportFilePath(path)
+    outputScenePath = ''.join(['output\\', 'SceneData', '_', path])
+    sgSceneExporter.SetExportFilePath(outputScenePath)
     sgSceneExporter.SetScene(sgScene)
     
     # Run scene exporter. 
-    exportResult = sgSceneExporter.RunExport()
-    if not exportResult:
+    exportResult = sgSceneExporter.Run()
+    if Simplygon.Failed(exportResult):
         raise Exception('Failed to save scene.')
 
 def CheckLog(sg: Simplygon.ISimplygon):
@@ -32,13 +33,13 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetErrorMessages(errors)
         errorCount = errors.GetItemCount()
         if errorCount > 0:
-            print("Errors:")
+            print('Errors:')
             for errorIndex in range(errorCount):
                 errorString = errors.GetItem(errorIndex)
                 print(errorString)
             sg.ClearErrorMessages()
     else:
-        print("No errors.")
+        print('No errors.')
     
     # Check if any warnings occurred. 
     hasWarnings = sg.WarningOccurred()
@@ -47,13 +48,13 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetWarningMessages(warnings)
         warningCount = warnings.GetItemCount()
         if warningCount > 0:
-            print("Warnings:")
+            print('Warnings:')
             for warningIndex in range(warningCount):
                 warningString = warnings.GetItem(warningIndex)
                 print(warningString)
             sg.ClearWarningMessages()
     else:
-        print("No warnings.")
+        print('No warnings.')
 
 def CreateCube(sg: Simplygon.ISimplygon, materialId: int):
     vertexCount = 8
@@ -107,11 +108,11 @@ def RunExample(sg: Simplygon.ISimplygon):
     sgRedColorNode = sg.CreateShadingColorNode()
     sgRedColorNode.SetColor(0.5, 0.0, 0.0, 0.0)
     sgDiffuseRedMaterial = sg.CreateMaterial()
-    sgDiffuseRedMaterial.SetName("red_diffuse")
+    sgDiffuseRedMaterial.SetName('red_diffuse')
     sgDiffuseRedMaterial.AddMaterialChannel(Simplygon.SG_MATERIAL_CHANNEL_DIFFUSE)
     sgDiffuseRedMaterial.SetShadingNetwork(Simplygon.SG_MATERIAL_CHANNEL_DIFFUSE, sgRedColorNode)
     sgSpecularRedMaterial = sg.CreateMaterial()
-    sgSpecularRedMaterial.SetName("red_specular")
+    sgSpecularRedMaterial.SetName('red_specular')
     sgSpecularRedMaterial.AddMaterialChannel(Simplygon.SG_MATERIAL_CHANNEL_SPECULAR)
     sgSpecularRedMaterial.SetShadingNetwork(Simplygon.SG_MATERIAL_CHANNEL_SPECULAR, sgRedColorNode)
     
@@ -124,10 +125,10 @@ def RunExample(sg: Simplygon.ISimplygon):
     sgCubeMesh2 = sg.CreateSceneMesh()
     
     # Set name on the scene meshes. 
-    sgCubeMesh1.SetName("Cube1")
-    sgCubeMesh1.SetOriginalName("Cube1")
-    sgCubeMesh2.SetName("Cube2")
-    sgCubeMesh2.SetOriginalName("Cube2")
+    sgCubeMesh1.SetName('Cube1')
+    sgCubeMesh1.SetOriginalName('Cube1')
+    sgCubeMesh2.SetName('Cube2')
+    sgCubeMesh2.SetOriginalName('Cube2')
     
     # Create cube geometry. 
     sgGeometryDataCube1 = CreateCube(sg, diffuseMaterialId)
@@ -159,19 +160,19 @@ def RunExample(sg: Simplygon.ISimplygon):
     
     # Save example scene to output.obj.     
     print("Save example scene to output.obj.")
-    SaveScene(sg, sgScene, "output.obj")
+    SaveScene(sg, sgScene, 'Output.obj')
     
     # Check log for any warnings or errors.     
     print("Check log for any warnings or errors.")
     CheckLog(sg)
 
 if __name__ == '__main__':
-    sg = simplygon_loader.init_simplygon()
-    if sg is None:
-        exit(Simplygon.GetLastInitializationError())
+        sg = simplygon_loader.init_simplygon()
+        if sg is None:
+            exit(Simplygon.GetLastInitializationError())
 
-    RunExample(sg)
+        RunExample(sg)
 
-    sg = None
-    gc.collect()
+        sg = None
+        gc.collect()
 

@@ -75,10 +75,11 @@ void RunReduction(Simplygon::ISimplygon* sg)
 	
 	// Add the custom observer to the reduction pipeline. 
 	sgReductionPipeline->AddObserver(&customObserver);
+	std::string outputScenePath = std::string("output\\") + std::string("ProgressEvent") + std::string("_Output.fbx");
 	
 	// Start the reduction pipeline. 	
 	printf("%s\n", "Start the reduction pipeline.");
-	sgReductionPipeline->RunSceneFromFile("../../../Assets/SimplygonMan/SimplygonMan.obj", "output.fbx", Simplygon::EPipelineRunMode::RunInNewProcess);
+	sgReductionPipeline->RunSceneFromFile("../../../Assets/SimplygonMan/SimplygonMan.obj", outputScenePath.c_str(), Simplygon::EPipelineRunMode::RunInNewProcess);
 	
 	// Check log for any warnings or errors. 	
 	printf("%s\n", "Check log for any warnings or errors.");

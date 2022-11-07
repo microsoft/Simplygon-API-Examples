@@ -49,8 +49,8 @@ public class Program
         sgSceneImporter.SetImportFilePath(path);
         
         // Run scene importer. 
-        bool importResult = sgSceneImporter.RunImport();
-        if (!importResult)
+        var importResult = sgSceneImporter.Run();
+        if (Simplygon.Simplygon.Failed(importResult))
         {
             throw new System.Exception("Failed to load scene.");
         }
@@ -61,12 +61,13 @@ public class Program
     {
         // Create scene exporter. 
         using Simplygon.spSceneExporter sgSceneExporter = sg.CreateSceneExporter();
-        sgSceneExporter.SetExportFilePath(path);
+        string outputScenePath = string.Join("", new string[] { "output\\", "ShadingNetworksWithCustomShadingNode", "_", path });
+        sgSceneExporter.SetExportFilePath(outputScenePath);
         sgSceneExporter.SetScene(sgScene);
         
         // Run scene exporter. 
-        bool exportResult = sgSceneExporter.RunExport();
-        if (!exportResult)
+        var exportResult = sgSceneExporter.Run();
+        if (Simplygon.Simplygon.Failed(exportResult))
         {
             throw new System.Exception("Failed to save scene.");
         }

@@ -84,7 +84,7 @@ public class Program
         var inputFiles = Directory.EnumerateFiles("../../../Assets/", "*.glb", SearchOption.AllDirectories);
         Parallel.ForEach(inputFiles, (inputFile) =>
         {
-            string outputFile = Path.Combine(Path.GetFileNameWithoutExtension(inputFile) + "_LOD" + Path.GetExtension(inputFile));
+            string outputFile = Path.Combine("output", $"BatchingWithSimplygonGrid_{Path.GetFileNameWithoutExtension(inputFile)}_LOD{Path.GetExtension(inputFile)}");
             RunReduction(sg, inputFile, outputFile);
         });
 

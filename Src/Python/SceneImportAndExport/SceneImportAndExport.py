@@ -9,8 +9,8 @@ import gc
 import threading
 
 from pathlib import Path
-from simplygon9 import simplygon_loader
-from simplygon9 import Simplygon
+from simplygon10 import simplygon_loader
+from simplygon10 import Simplygon
 
 
 def LoadScene(sg: Simplygon.ISimplygon, path: str):
@@ -19,21 +19,22 @@ def LoadScene(sg: Simplygon.ISimplygon, path: str):
     sgSceneImporter.SetImportFilePath(path)
     
     # Run scene importer. 
-    importResult = sgSceneImporter.RunImport()
-    if not importResult:
+    importResult = sgSceneImporter.Run()
+    if Simplygon.Failed(importResult):
         raise Exception('Failed to load scene.')
     sgScene = sgSceneImporter.GetScene()
     return sgScene
 
-def SaveScene(sg: Simplygon.ISimplygon, sgScene:Simplygon.spScene, path: str):
+def SaveScene(sg: Simplygon.ISimplygon, sgScene: Simplygon.spScene, path: str):
     # Create scene exporter. 
     sgSceneExporter = sg.CreateSceneExporter()
-    sgSceneExporter.SetExportFilePath(path)
+    outputScenePath = ''.join(['output\\', 'SceneImportAndExport', '_', path])
+    sgSceneExporter.SetExportFilePath(outputScenePath)
     sgSceneExporter.SetScene(sgScene)
     
     # Run scene exporter. 
-    exportResult = sgSceneExporter.RunExport()
-    if not exportResult:
+    exportResult = sgSceneExporter.Run()
+    if Simplygon.Failed(exportResult):
         raise Exception('Failed to save scene.')
 
 def CheckLog(sg: Simplygon.ISimplygon):
@@ -44,13 +45,13 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetErrorMessages(errors)
         errorCount = errors.GetItemCount()
         if errorCount > 0:
-            print("Errors:")
+            print('Errors:')
             for errorIndex in range(errorCount):
                 errorString = errors.GetItem(errorIndex)
                 print(errorString)
             sg.ClearErrorMessages()
     else:
-        print("No errors.")
+        print('No errors.')
     
     # Check if any warnings occurred. 
     hasWarnings = sg.WarningOccurred()
@@ -59,50 +60,50 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetWarningMessages(warnings)
         warningCount = warnings.GetItemCount()
         if warningCount > 0:
-            print("Warnings:")
+            print('Warnings:')
             for warningIndex in range(warningCount):
                 warningString = warnings.GetItem(warningIndex)
                 print(warningString)
             sg.ClearWarningMessages()
     else:
-        print("No warnings.")
+        print('No warnings.')
 
 def ImportExport(sg: Simplygon.ISimplygon):
     # Load obj scene.     
     print("Load obj scene.")
-    sgSceneObj = LoadScene(sg, "../../../Assets/SimplygonMan/SimplygonMan.obj")
+    sgSceneObj = LoadScene(sg, '../../../Assets/SimplygonMan/SimplygonMan.obj')
     
     # Save obj scene.     
     print("Save obj scene.")
-    SaveScene(sg, sgSceneObj, "Output.obj")
+    SaveScene(sg, sgSceneObj, 'Output.obj')
     
     # Load fbx scene.     
     print("Load fbx scene.")
-    sgSceneFbx = LoadScene(sg, "../../../Assets/RiggedSimplygonMan/RiggedSimplygonMan.fbx")
+    sgSceneFbx = LoadScene(sg, '../../../Assets/RiggedSimplygonMan/RiggedSimplygonMan.fbx')
     
     # Save fbx scene.     
     print("Save fbx scene.")
-    SaveScene(sg, sgSceneFbx, "Output.fbx")
+    SaveScene(sg, sgSceneFbx, 'Output.fbx')
     
     # Load glb scene.     
     print("Load glb scene.")
-    sgSceneGlb = LoadScene(sg, "../../../Assets/RiggedSimplygonMan/RiggedSimplygonMan.glb")
+    sgSceneGlb = LoadScene(sg, '../../../Assets/RiggedSimplygonMan/RiggedSimplygonMan.glb')
     
     # Save glb scene.     
     print("Save glb scene.")
-    SaveScene(sg, sgSceneGlb, "Output.glb")
+    SaveScene(sg, sgSceneGlb, 'Output.glb')
     
     # Check log for any warnings or errors.     
     print("Check log for any warnings or errors.")
     CheckLog(sg)
 
 if __name__ == '__main__':
-    sg = simplygon_loader.init_simplygon()
-    if sg is None:
-        exit(Simplygon.GetLastInitializationError())
+        sg = simplygon_loader.init_simplygon()
+        if sg is None:
+            exit(Simplygon.GetLastInitializationError())
 
-    ImportExport(sg)
+        ImportExport(sg)
 
-    sg = None
-    gc.collect()
+        sg = None
+        gc.collect()
 

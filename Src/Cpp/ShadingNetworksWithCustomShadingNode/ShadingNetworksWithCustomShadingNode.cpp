@@ -49,8 +49,8 @@ Simplygon::spScene LoadScene(Simplygon::ISimplygon* sg, const char* path)
 	sgSceneImporter->SetImportFilePath(path);
 	
 	// Run scene importer. 
-	bool importResult = sgSceneImporter->RunImport();
-	if (!importResult)
+	auto importResult = sgSceneImporter->Run();
+	if (Simplygon::Failed(importResult))
 	{
 		throw std::exception("Failed to load scene.");
 	}
@@ -62,12 +62,13 @@ void SaveScene(Simplygon::ISimplygon* sg, Simplygon::spScene sgScene, const char
 {
 	// Create scene exporter. 
 	Simplygon::spSceneExporter sgSceneExporter = sg->CreateSceneExporter();
-	sgSceneExporter->SetExportFilePath(path);
+	std::string outputScenePath = std::string("output\\") + std::string("ShadingNetworksWithCustomShadingNode") + std::string("_") + std::string(path);
+	sgSceneExporter->SetExportFilePath(outputScenePath.c_str());
 	sgSceneExporter->SetScene(sgScene);
 	
 	// Run scene exporter. 
-	bool exportResult = sgSceneExporter->RunExport();
-	if (!exportResult)
+	auto exportResult = sgSceneExporter->Run();
+	if (Simplygon::Failed(exportResult))
 	{
 		throw std::exception("Failed to save scene.");
 	}

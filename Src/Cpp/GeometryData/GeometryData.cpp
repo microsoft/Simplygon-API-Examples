@@ -12,12 +12,13 @@ void SaveScene(Simplygon::ISimplygon* sg, Simplygon::spScene sgScene, const char
 {
 	// Create scene exporter. 
 	Simplygon::spSceneExporter sgSceneExporter = sg->CreateSceneExporter();
-	sgSceneExporter->SetExportFilePath(path);
+	std::string outputScenePath = std::string("output\\") + std::string("GeometryData") + std::string("_") + std::string(path);
+	sgSceneExporter->SetExportFilePath(outputScenePath.c_str());
 	sgSceneExporter->SetScene(sgScene);
 	
 	// Run scene exporter. 
-	bool exportResult = sgSceneExporter->RunExport();
-	if (!exportResult)
+	auto exportResult = sgSceneExporter->Run();
+	if (Simplygon::Failed(exportResult))
 	{
 		throw std::exception("Failed to save scene.");
 	}
