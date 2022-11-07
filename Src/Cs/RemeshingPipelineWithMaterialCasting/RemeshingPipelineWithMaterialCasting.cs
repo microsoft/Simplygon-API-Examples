@@ -14,8 +14,8 @@ public class Program
         sgSceneImporter.SetImportFilePath(path);
         
         // Run scene importer. 
-        bool importResult = sgSceneImporter.RunImport();
-        if (!importResult)
+        var importResult = sgSceneImporter.Run();
+        if (Simplygon.Simplygon.Failed(importResult))
         {
             throw new System.Exception("Failed to load scene.");
         }
@@ -26,12 +26,13 @@ public class Program
     {
         // Create scene exporter. 
         using Simplygon.spSceneExporter sgSceneExporter = sg.CreateSceneExporter();
-        sgSceneExporter.SetExportFilePath(path);
+        string outputScenePath = string.Join("", new string[] { "output\\", "RemeshingPipelineWithMaterialCasting", "_", path });
+        sgSceneExporter.SetExportFilePath(outputScenePath);
         sgSceneExporter.SetScene(sgScene);
         
         // Run scene exporter. 
-        bool exportResult = sgSceneExporter.RunExport();
-        if (!exportResult)
+        var exportResult = sgSceneExporter.Run();
+        if (Simplygon.Simplygon.Failed(exportResult))
         {
             throw new System.Exception("Failed to save scene.");
         }
@@ -104,12 +105,8 @@ public class Program
         sgMappingImageSettings.SetApplyNewMaterialIds( true );
         sgMappingImageSettings.SetGenerateTangents( true );
         sgMappingImageSettings.SetUseFullRetexturing( true );
-        sgMappingImageSettings.SetTexCoordGeneratorType( Simplygon.ETexcoordGeneratorType.ChartAggregator );
-        using Simplygon.spChartAggregatorSettings sgChartAggregatorSettings = sgMappingImageSettings.GetChartAggregatorSettings();
         
-        // Enable the chart aggregator and reuse UV space. 
-        sgChartAggregatorSettings.SetChartAggregatorMode( Simplygon.EChartAggregatorMode.SurfaceArea );
-        sgChartAggregatorSettings.SetSeparateOverlappingCharts( false );
+        // Get the output material settings 
         using Simplygon.spMappingImageOutputMaterialSettings sgOutputMaterialSettings = sgMappingImageSettings.GetOutputMaterialSettings(0);
         
         // Setting the size of the output material for the mapping image. This will be the output size of the 

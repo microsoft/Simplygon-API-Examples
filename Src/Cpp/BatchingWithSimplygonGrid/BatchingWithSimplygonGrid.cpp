@@ -92,7 +92,7 @@ int main()
 		if (itr.path().extension().compare(".glb") != 0)
 			continue;
 		std::string inputFile = itr.path().generic_u8string();
-		std::string outputFile = itr.path().stem().concat("_LOD").concat( itr.path().extension().generic_u8string() ).generic_u8string();
+		std::string outputFile = std::string("output\\") + std::string("BatchingWithSimplygonGrid_") + itr.path().stem().concat("_LOD").concat( itr.path().extension().generic_u8string() ).generic_u8string();
 
 		jobs.push_back( std::async( [](Simplygon::ISimplygon * sg, std::string inputFile, std::string outputFile)
 		{

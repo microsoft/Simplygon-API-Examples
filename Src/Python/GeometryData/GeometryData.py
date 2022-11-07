@@ -9,19 +9,20 @@ import gc
 import threading
 
 from pathlib import Path
-from simplygon9 import simplygon_loader
-from simplygon9 import Simplygon
+from simplygon10 import simplygon_loader
+from simplygon10 import Simplygon
 
 
-def SaveScene(sg: Simplygon.ISimplygon, sgScene:Simplygon.spScene, path: str):
+def SaveScene(sg: Simplygon.ISimplygon, sgScene: Simplygon.spScene, path: str):
     # Create scene exporter. 
     sgSceneExporter = sg.CreateSceneExporter()
-    sgSceneExporter.SetExportFilePath(path)
+    outputScenePath = ''.join(['output\\', 'GeometryData', '_', path])
+    sgSceneExporter.SetExportFilePath(outputScenePath)
     sgSceneExporter.SetScene(sgScene)
     
     # Run scene exporter. 
-    exportResult = sgSceneExporter.RunExport()
-    if not exportResult:
+    exportResult = sgSceneExporter.Run()
+    if Simplygon.Failed(exportResult):
         raise Exception('Failed to save scene.')
 
 def CheckLog(sg: Simplygon.ISimplygon):
@@ -32,13 +33,13 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetErrorMessages(errors)
         errorCount = errors.GetItemCount()
         if errorCount > 0:
-            print("Errors:")
+            print('Errors:')
             for errorIndex in range(errorCount):
                 errorString = errors.GetItem(errorIndex)
                 print(errorString)
             sg.ClearErrorMessages()
     else:
-        print("No errors.")
+        print('No errors.')
     
     # Check if any warnings occurred. 
     hasWarnings = sg.WarningOccurred()
@@ -47,13 +48,13 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetWarningMessages(warnings)
         warningCount = warnings.GetItemCount()
         if warningCount > 0:
-            print("Warnings:")
+            print('Warnings:')
             for warningIndex in range(warningCount):
                 warningString = warnings.GetItem(warningIndex)
                 print(warningString)
             sg.ClearWarningMessages()
     else:
-        print("No warnings.")
+        print('No warnings.')
 
 def RunExample1(sg: Simplygon.ISimplygon):
     # 4 separate triangles, with 3 vertices each and 3 sets of UV coordinates each. They make up 2 
@@ -104,14 +105,14 @@ def RunExample1(sg: Simplygon.ISimplygon):
     # Create a scene and a SceneMesh node with the geometry. 
     sgScene = sg.CreateScene()
     sgSceneMesh = sg.CreateSceneMesh()
-    sgSceneMesh.SetName("Mesh1")
+    sgSceneMesh.SetName('Mesh1')
     sgSceneMesh.SetGeometry(sgGeometryData)
     sgScene.GetRootNode().AddChild(sgSceneMesh)
 
     
     # Save example1 scene to Example1.obj.     
     print("Save example1 scene to Example1.obj.")
-    SaveScene(sg, sgScene, "Example1.obj")
+    SaveScene(sg, sgScene, 'Example1.obj')
     
     # Check log for any warnings or errors.     
     print("Check log for any warnings or errors.")
@@ -165,14 +166,14 @@ def RunExample2(sg: Simplygon.ISimplygon):
     # Create a scene and a SceneMesh node with the geometry. 
     sgScene = sg.CreateScene()
     sgSceneMesh = sg.CreateSceneMesh()
-    sgSceneMesh.SetName("Mesh2")
+    sgSceneMesh.SetName('Mesh2')
     sgSceneMesh.SetGeometry(sgGeometryData)
     sgScene.GetRootNode().AddChild(sgSceneMesh)
 
     
     # Save example2 scene to Example2.obj.     
     print("Save example2 scene to Example2.obj.")
-    SaveScene(sg, sgScene, "Example2.obj")
+    SaveScene(sg, sgScene, 'Example2.obj')
     
     # Check log for any warnings or errors.     
     print("Check log for any warnings or errors.")
@@ -229,7 +230,7 @@ def RunExample3(sg: Simplygon.ISimplygon):
     # Create a scene and a SceneMesh node with the geometry. 
     sgScene = sg.CreateScene()
     sgSceneMesh = sg.CreateSceneMesh()
-    sgSceneMesh.SetName("Mesh3")
+    sgSceneMesh.SetName('Mesh3')
     sgGeometryData = sgPackedGeometryData.NewUnpackedCopy()
     sgSceneMesh.SetGeometry(sgGeometryData)
     sgScene.GetRootNode().AddChild(sgSceneMesh)
@@ -237,21 +238,21 @@ def RunExample3(sg: Simplygon.ISimplygon):
     
     # Save example3 scene to Example3.obj.     
     print("Save example3 scene to Example3.obj.")
-    SaveScene(sg, sgScene, "Example3.obj")
+    SaveScene(sg, sgScene, 'Example3.obj')
     
     # Check log for any warnings or errors.     
     print("Check log for any warnings or errors.")
     CheckLog(sg)
 
 if __name__ == '__main__':
-    sg = simplygon_loader.init_simplygon()
-    if sg is None:
-        exit(Simplygon.GetLastInitializationError())
+        sg = simplygon_loader.init_simplygon()
+        if sg is None:
+            exit(Simplygon.GetLastInitializationError())
 
-    RunExample1(sg)
-    RunExample2(sg)
-    RunExample3(sg)
+        RunExample1(sg)
+        RunExample2(sg)
+        RunExample3(sg)
 
-    sg = None
-    gc.collect()
+        sg = None
+        gc.collect()
 

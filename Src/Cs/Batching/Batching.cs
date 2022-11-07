@@ -84,7 +84,7 @@ public class Program
         var inputFiles = Directory.EnumerateFiles("../../../Assets/", "*.glb", SearchOption.AllDirectories);
         foreach (string inputFile in inputFiles)
         {
-            string outputFile = Path.Combine(Path.GetFileNameWithoutExtension(inputFile) + "_LOD" + Path.GetExtension(inputFile));
+            string outputFile = Path.Combine("output", $"Batching_{Path.GetFileNameWithoutExtension(inputFile)}_LOD{Path.GetExtension(inputFile)}");
             RunReduction(sg, inputFile, outputFile);
         }
 

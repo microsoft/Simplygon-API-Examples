@@ -1,0 +1,9 @@
+<MaterialEvaluationShader Version="1.0">
+<Attribute Name="TEXCOORD0" FieldFormat="F32vec2" FieldType="TexCoords" />
+<Attribute Name="USERPERVERT1" FieldFormat="F32vec4" FieldType="UserVertexField" FieldName="UserPerVert1"/>
+<Attribute Name="USERPERCORN1" FieldFormat="F32vec2" FieldType="UserCornerField" FieldName="UserPerCorn1"/>
+<Attribute Name="TRIINDEX14" FieldFormat="F32vec3" FieldType="UserTriangleField" FieldName="UserPerTri14"/>
+<Attribute Name="CUSTOM23" FieldFormat="F32vec4" FieldType="CustomField" FieldName="CustomField23"/>
+<EvaluationFunction Channel="Diffuse" EntryPoint="Diffuse"/>
+<ShaderParameterSampler Name="DiffuseTexture" TextureName="ReplaceMe" />
+</MaterialEvaluationShader>

@@ -74,10 +74,11 @@ public class Program
         
         // Add the custom observer to the reduction pipeline. 
         sgReductionPipeline.AddObserver(customObserver);
+        string outputScenePath = string.Join("", new string[] { "output\\", "ProgressEvent", "_Output.fbx" });
         
         // Start the reduction pipeline.         
         Console.WriteLine("Start the reduction pipeline.");
-        sgReductionPipeline.RunSceneFromFile("../../../Assets/SimplygonMan/SimplygonMan.obj", "output.fbx", Simplygon.EPipelineRunMode.RunInNewProcess);
+        sgReductionPipeline.RunSceneFromFile("../../../Assets/SimplygonMan/SimplygonMan.obj", outputScenePath, Simplygon.EPipelineRunMode.RunInNewProcess);
         
         // Check log for any warnings or errors.         
         Console.WriteLine("Check log for any warnings or errors.");

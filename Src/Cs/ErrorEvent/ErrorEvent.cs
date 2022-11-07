@@ -81,7 +81,7 @@ public class Program
         
         // Start the reduction pipeline and the faulty settings will cause an error.         
         Console.WriteLine("Start the reduction pipeline and the faulty settings will cause an error.");
-        sgReductionPipeline.RunSceneFromFile("../../../Assets/SimplygonMan/SimplygonMan.obj", "output.fbx", Simplygon.EPipelineRunMode.RunInNewProcess);
+        sgReductionPipeline.RunSceneFromFile("../../../Assets/SimplygonMan/SimplygonMan.obj", "Output.fbx", Simplygon.EPipelineRunMode.RunInNewProcess);
         
         // Check log for any warnings or errors.         
         Console.WriteLine("Check log for any warnings or errors.");

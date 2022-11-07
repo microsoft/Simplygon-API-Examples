@@ -36,13 +36,13 @@
   <ItemGroup>
     <Reference Include="SimplygonDotNetWrapper">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>$([System.Environment]::ExpandEnvironmentVariables($(SIMPLYGON_9_PATH)))\SimplygonDotNetWrapper.dll</HintPath>
+      <HintPath>$([System.Environment]::ExpandEnvironmentVariables($(SIMPLYGON_10_PATH)))\SimplygonDotNetWrapper.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="$([System.Environment]::ExpandEnvironmentVariables($(SIMPLYGON_9_PATH)))\DotNet\SimplygonLoader.cs">
+    <Compile Include="$([System.Environment]::ExpandEnvironmentVariables($(SIMPLYGON_10_PATH)))\DotNet\SimplygonLoader.cs">
       <Link>SimplygonLoader.cs</Link>
     </Compile>
     <Compile Include="ImpostorFromSingleView.cs" />
