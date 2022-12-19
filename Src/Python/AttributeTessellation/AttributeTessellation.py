@@ -68,35 +68,36 @@ def CheckLog(sg: Simplygon.ISimplygon):
     else:
         print('No warnings.')
 
-def RunReductionWithTessellatedAttributes(sg: Simplygon.ISimplygon):
+def RunRemeshingWithTessellatedAttributes(sg: Simplygon.ISimplygon):
     # Load scene to process.     
     print("Load scene to process.")
     sgScene = LoadScene(sg, '../../../Assets/SimplygonMan/SimplygonMan.obj')
     
-    # Create the reduction pipeline. 
-    sgReductionPipeline = sg.CreateReductionPipeline()
+    # Create the remeshing pipeline. 
+    sgRemeshingPipeline = sg.CreateRemeshingPipeline()
     
     # Fetch all the needed settings objects for the processing, including the attribute 
     # tessellation settings, which we will use to set up the attribute tessellation on the processed 
     # mesh. 
-    sgReductionSettings = sgReductionPipeline.GetReductionSettings()
-    sgAttributeTessellationSettings = sgReductionPipeline.GetAttributeTessellationSettings()
-    sgMappingImageSettings = sgReductionPipeline.GetMappingImageSettings()
+    sgRemeshingSettings = sgRemeshingPipeline.GetRemeshingSettings()
+    sgAttributeTessellationSettings = sgRemeshingPipeline.GetAttributeTessellationSettings()
+    sgMappingImageSettings = sgRemeshingPipeline.GetMappingImageSettings()
     
-    # Set reduction target to triangle ratio with a ratio of 25% of the original mesh. 
-    sgReductionSettings.SetReductionTargets( Simplygon.EStopCondition_All, True, False, False, False )
-    sgReductionSettings.SetReductionTargetTriangleRatio( 0.25 )
+    # Set on-screen size target for remeshing. 
+    sgRemeshingSettings.SetOnScreenSize( 500 )
+    sgRemeshingSettings.SetGeometricalAccuracy( 2.0 )
     
     # Get the attribute tessellation settings. The displacement data will be cast into a 
     # tessellated displacement attribute. In this example we use relative area as the density 
     # setting, which means that triangles are tessellated based on the size of the triangle, so that 
     # the tessellated attributes roughly take up the same area. The value is normalized and scale 
-    # independent, so the total area of all the subvalues will add up to the area 1. We set the maximum 
-    # area per value to 1/100000, which means that there will be at least 100000 values total in the 
-    # scene. 
+    # independent, so the total area of all the subvalues will add up to the normalized value 1. We set 
+    # the maximum area per value to 1/1000000, which means that there will be at least 1000000 values 
+    # total in the scene, unless we cap the total number of values with MaxTotalValuesCount or 
+    # MaxTessellationLevel. 
     sgAttributeTessellationSettings.SetEnableAttributeTessellation( True )
     sgAttributeTessellationSettings.SetAttributeTessellationDensityMode( Simplygon.EAttributeTessellationDensityMode_RelativeArea )
-    sgAttributeTessellationSettings.SetMaxAreaOfTessellatedValue( 0.00001 )
+    sgAttributeTessellationSettings.SetMaxAreaOfTessellatedValue( 0.000001 )
     sgAttributeTessellationSettings.SetOnlyAllowOneLevelOfDifference( True )
     sgAttributeTessellationSettings.SetMinTessellationLevel( 0 )
     sgAttributeTessellationSettings.SetMaxTessellationLevel( 5 )
@@ -106,6 +107,7 @@ def RunReductionWithTessellatedAttributes(sg: Simplygon.ISimplygon):
     # materials to the new reduced object, and also to cast the displacement data from the original 
     # object into the tessellated attributes of the processed mesh. 
     sgMappingImageSettings.SetGenerateMappingImage( True )
+    sgMappingImageSettings.SetGenerateTexCoords( True )
     sgMappingImageSettings.SetApplyNewMaterialIds( True )
     sgMappingImageSettings.SetGenerateTangents( True )
     sgMappingImageSettings.SetUseFullRetexturing( True )
@@ -125,7 +127,7 @@ def RunReductionWithTessellatedAttributes(sg: Simplygon.ISimplygon):
     sgDiffuseCasterSettings.SetMaterialChannel( "Diffuse" )
     sgDiffuseCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
 
-    sgReductionPipeline.AddMaterialCaster( sgDiffuseCaster, 0 )
+    sgRemeshingPipeline.AddMaterialCaster( sgDiffuseCaster, 0 )
     
     # Add a normals texture caster to the pipeline. This will cast the normals in the original scene 
     # into a normal map in the output scene. 
@@ -135,7 +137,7 @@ def RunReductionWithTessellatedAttributes(sg: Simplygon.ISimplygon):
     sgNormalsCasterSettings.SetGenerateTangentSpaceNormals( True )
     sgNormalsCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
 
-    sgReductionPipeline.AddMaterialCaster( sgNormalsCaster, 0 )
+    sgRemeshingPipeline.AddMaterialCaster( sgNormalsCaster, 0 )
     
     # Add a displacement caster to the pipeline. This will cast the displacement values, but instead 
     # of casting to a texture, it will cast into the tessellated attributes. 
@@ -150,15 +152,15 @@ def RunReductionWithTessellatedAttributes(sg: Simplygon.ISimplygon):
     sgDisplacementCasterSettings.GetAttributeTessellationSamplingSettings().SetSupersamplingCount( 16 )
     sgDisplacementCasterSettings.GetAttributeTessellationSamplingSettings().SetBlendOperation( Simplygon.EBlendOperation_Mean )
 
-    sgReductionPipeline.AddMaterialCaster( sgDisplacementCaster, 0 )
+    sgRemeshingPipeline.AddMaterialCaster( sgDisplacementCaster, 0 )
     
-    # Start the reduction pipeline.     
-    print("Start the reduction pipeline.")
-    sgReductionPipeline.RunScene(sgScene, Simplygon.EPipelineRunMode_RunInThisProcess)
+    # Start the remeshing pipeline.     
+    print("Start the remeshing pipeline.")
+    sgRemeshingPipeline.RunScene(sgScene, Simplygon.EPipelineRunMode_RunInThisProcess)
     
     # Save processed scene.     
     print("Save processed scene.")
-    SaveScene(sg, sgScene, 'Output.gltf')
+    SaveScene(sg, sgScene, 'RemeshedOutput.gltf')
     
     # Create an attribute tessellation tool object. 
     sgAttributeTessellation = sg.CreateAttributeTessellation()
@@ -169,7 +171,7 @@ def RunReductionWithTessellatedAttributes(sg: Simplygon.ISimplygon):
     
     # Save the tessellated copy of the scene.     
     print("Save the tessellated copy of the scene.")
-    SaveScene(sg, sgTessellatedScene, 'TessellatedOutput.obj')
+    SaveScene(sg, sgTessellatedScene, 'RemeshedTessellatedOutput.obj')
     
     # Check log for any warnings or errors.     
     print("Check log for any warnings or errors.")
@@ -180,7 +182,7 @@ if __name__ == '__main__':
         if sg is None:
             exit(Simplygon.GetLastInitializationError())
 
-        RunReductionWithTessellatedAttributes(sg)
+        RunRemeshingWithTessellatedAttributes(sg)
 
         sg = None
         gc.collect()

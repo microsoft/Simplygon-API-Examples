@@ -22,6 +22,7 @@ public class Program
             throw new System.Exception("Failed to save scene.");
         }
     }
+
     static void CheckLog(Simplygon.ISimplygon sg)
     {
         // Check if any errors occurred. 
@@ -70,6 +71,7 @@ public class Program
             Console.WriteLine("No warnings.");
         }
     }
+
     static void RunExample1(Simplygon.ISimplygon sg)
     {
         // 4 separate triangles, with 3 vertices each and 3 sets of UV coordinates each. They make up 2 
@@ -167,6 +169,7 @@ public class Program
         Console.WriteLine("Check log for any warnings or errors.");
         CheckLog(sg);
     }
+
     static void RunExample2(Simplygon.ISimplygon sg)
     {
         // Same as RunExample1, but now the vertices are shared among the triangles. 
@@ -257,6 +260,7 @@ public class Program
         Console.WriteLine("Check log for any warnings or errors.");
         CheckLog(sg);
     }
+
     static void RunExample3(Simplygon.ISimplygon sg)
     {
         // Same as RunExample1, but now all corner-data is stored as vertex-data, in a packet format. 
@@ -349,6 +353,7 @@ public class Program
         Console.WriteLine("Check log for any warnings or errors.");
         CheckLog(sg);
     }
+
     static int Main(string[] args)
     {
         using var sg = Simplygon.Loader.InitSimplygon(out var errorCode, out var errorMessage);
@@ -363,4 +368,5 @@ public class Program
 
         return 0;
     }
+
 }

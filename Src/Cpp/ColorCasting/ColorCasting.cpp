@@ -133,7 +133,7 @@ void ColorCasting(Simplygon::ISimplygon* sg)
 	sgDiffuseCasterSettings->SetOutputImageFileFormat( Simplygon::EImageOutputFormat::PNG );
 
 	sgDiffuseCaster->RunProcessing();
-	std::string diffuseTextureFilePath = sgDiffuseCaster->GetOutputFilePath();
+	std::string diffuseTextureFilePath = sgDiffuseCaster->GetOutputFilePath().c_str();
 	
 	// Update scene with new casted texture. 
 	Simplygon::spMaterialTable sgMaterialTable = sg->CreateMaterialTable();

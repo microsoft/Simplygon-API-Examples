@@ -1,4 +1,4 @@
-<MaterialEvaluationShader Version="1.0">
+<MaterialEvaluationShader Version="1.0" ShaderLanguage="GLSL">
 <Attribute Name="TEXCOORD0" FieldFormat="F32vec2" FieldType="TexCoords" />
 <Attribute Name="USERPERVERT1" FieldFormat="F32vec4" FieldType="UserVertexField" FieldName="UserPerVert1"/>
 <Attribute Name="USERPERCORN1" FieldFormat="F32vec2" FieldType="UserCornerField" FieldName="UserPerCorn1"/>
