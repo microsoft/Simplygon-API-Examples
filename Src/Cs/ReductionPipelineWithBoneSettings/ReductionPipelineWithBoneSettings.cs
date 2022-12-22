@@ -22,6 +22,7 @@ public class Program
         Simplygon.spScene sgScene = sgSceneImporter.GetScene();
         return sgScene;
     }
+
     static void SaveScene(Simplygon.ISimplygon sg, Simplygon.spScene sgScene, string path)
     {
         // Create scene exporter. 
@@ -37,6 +38,7 @@ public class Program
             throw new System.Exception("Failed to save scene.");
         }
     }
+
     static void CheckLog(Simplygon.ISimplygon sg)
     {
         // Check if any errors occurred. 
@@ -85,6 +87,7 @@ public class Program
             Console.WriteLine("No warnings.");
         }
     }
+
     static void RunReduction(Simplygon.ISimplygon sg)
     {
         // Load scene to process.         
@@ -129,6 +132,7 @@ public class Program
         Console.WriteLine("Check log for any warnings or errors.");
         CheckLog(sg);
     }
+
     static int Main(string[] args)
     {
         using var sg = Simplygon.Loader.InitSimplygon(out var errorCode, out var errorMessage);
@@ -141,4 +145,5 @@ public class Program
 
         return 0;
     }
+
 }

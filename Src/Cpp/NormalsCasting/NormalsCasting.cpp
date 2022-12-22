@@ -137,7 +137,7 @@ void NormalsCasting(Simplygon::ISimplygon* sg)
 	sgNormalsCasterSettings->SetOutputPixelFormat( Simplygon::EPixelFormat::R8G8B8 );
 
 	sgNormalsCaster->RunProcessing();
-	std::string normalsTextureFilePath = sgNormalsCaster->GetOutputFilePath();
+	std::string normalsTextureFilePath = sgNormalsCaster->GetOutputFilePath().c_str();
 	
 	// Update scene with new casted texture. 
 	Simplygon::spMaterialTable sgMaterialTable = sg->CreateMaterialTable();

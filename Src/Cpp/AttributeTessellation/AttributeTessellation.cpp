@@ -89,36 +89,37 @@ void CheckLog(Simplygon::ISimplygon* sg)
 	}
 }
 
-void RunReductionWithTessellatedAttributes(Simplygon::ISimplygon* sg)
+void RunRemeshingWithTessellatedAttributes(Simplygon::ISimplygon* sg)
 {
 	// Load scene to process. 	
 	printf("%s\n", "Load scene to process.");
 	Simplygon::spScene sgScene = LoadScene(sg, "../../../Assets/SimplygonMan/SimplygonMan.obj");
 	
-	// Create the reduction pipeline. 
-	Simplygon::spReductionPipeline sgReductionPipeline = sg->CreateReductionPipeline();
+	// Create the remeshing pipeline. 
+	Simplygon::spRemeshingPipeline sgRemeshingPipeline = sg->CreateRemeshingPipeline();
 	
 	// Fetch all the needed settings objects for the processing, including the attribute 
 	// tessellation settings, which we will use to set up the attribute tessellation on the processed 
 	// mesh. 
-	Simplygon::spReductionSettings sgReductionSettings = sgReductionPipeline->GetReductionSettings();
-	Simplygon::spAttributeTessellationSettings sgAttributeTessellationSettings = sgReductionPipeline->GetAttributeTessellationSettings();
-	Simplygon::spMappingImageSettings sgMappingImageSettings = sgReductionPipeline->GetMappingImageSettings();
+	Simplygon::spRemeshingSettings sgRemeshingSettings = sgRemeshingPipeline->GetRemeshingSettings();
+	Simplygon::spAttributeTessellationSettings sgAttributeTessellationSettings = sgRemeshingPipeline->GetAttributeTessellationSettings();
+	Simplygon::spMappingImageSettings sgMappingImageSettings = sgRemeshingPipeline->GetMappingImageSettings();
 	
-	// Set reduction target to triangle ratio with a ratio of 25% of the original mesh. 
-	sgReductionSettings->SetReductionTargets( Simplygon::EStopCondition::All, true, false, false, false );
-	sgReductionSettings->SetReductionTargetTriangleRatio( 0.25f );
+	// Set on-screen size target for remeshing. 
+	sgRemeshingSettings->SetOnScreenSize( 500 );
+	sgRemeshingSettings->SetGeometricalAccuracy( 2.0f );
 	
 	// Get the attribute tessellation settings. The displacement data will be cast into a 
 	// tessellated displacement attribute. In this example we use relative area as the density 
 	// setting, which means that triangles are tessellated based on the size of the triangle, so that 
 	// the tessellated attributes roughly take up the same area. The value is normalized and scale 
-	// independent, so the total area of all the subvalues will add up to the area 1. We set the maximum 
-	// area per value to 1/100000, which means that there will be at least 100000 values total in the 
-	// scene. 
+	// independent, so the total area of all the subvalues will add up to the normalized value 1. We set 
+	// the maximum area per value to 1/1000000, which means that there will be at least 1000000 values 
+	// total in the scene, unless we cap the total number of values with MaxTotalValuesCount or 
+	// MaxTessellationLevel. 
 	sgAttributeTessellationSettings->SetEnableAttributeTessellation( true );
 	sgAttributeTessellationSettings->SetAttributeTessellationDensityMode( Simplygon::EAttributeTessellationDensityMode::RelativeArea );
-	sgAttributeTessellationSettings->SetMaxAreaOfTessellatedValue( 0.00001f );
+	sgAttributeTessellationSettings->SetMaxAreaOfTessellatedValue( 0.000001f );
 	sgAttributeTessellationSettings->SetOnlyAllowOneLevelOfDifference( true );
 	sgAttributeTessellationSettings->SetMinTessellationLevel( 0 );
 	sgAttributeTessellationSettings->SetMaxTessellationLevel( 5 );
@@ -128,6 +129,7 @@ void RunReductionWithTessellatedAttributes(Simplygon::ISimplygon* sg)
 	// materials to the new reduced object, and also to cast the displacement data from the original 
 	// object into the tessellated attributes of the processed mesh. 
 	sgMappingImageSettings->SetGenerateMappingImage( true );
+	sgMappingImageSettings->SetGenerateTexCoords( true );
 	sgMappingImageSettings->SetApplyNewMaterialIds( true );
 	sgMappingImageSettings->SetGenerateTangents( true );
 	sgMappingImageSettings->SetUseFullRetexturing( true );
@@ -148,7 +150,7 @@ void RunReductionWithTessellatedAttributes(Simplygon::ISimplygon* sg)
 	sgDiffuseCasterSettings->SetMaterialChannel( "Diffuse" );
 	sgDiffuseCasterSettings->SetOutputImageFileFormat( Simplygon::EImageOutputFormat::PNG );
 
-	sgReductionPipeline->AddMaterialCaster( sgDiffuseCaster, 0 );
+	sgRemeshingPipeline->AddMaterialCaster( sgDiffuseCaster, 0 );
 	
 	// Add a normals texture caster to the pipeline. This will cast the normals in the original scene 
 	// into a normal map in the output scene. 
@@ -159,7 +161,7 @@ void RunReductionWithTessellatedAttributes(Simplygon::ISimplygon* sg)
 	sgNormalsCasterSettings->SetGenerateTangentSpaceNormals( true );
 	sgNormalsCasterSettings->SetOutputImageFileFormat( Simplygon::EImageOutputFormat::PNG );
 
-	sgReductionPipeline->AddMaterialCaster( sgNormalsCaster, 0 );
+	sgRemeshingPipeline->AddMaterialCaster( sgNormalsCaster, 0 );
 	
 	// Add a displacement caster to the pipeline. This will cast the displacement values, but instead 
 	// of casting to a texture, it will cast into the tessellated attributes. 
@@ -175,15 +177,15 @@ void RunReductionWithTessellatedAttributes(Simplygon::ISimplygon* sg)
 	sgDisplacementCasterSettings->GetAttributeTessellationSamplingSettings()->SetSupersamplingCount( 16 );
 	sgDisplacementCasterSettings->GetAttributeTessellationSamplingSettings()->SetBlendOperation( Simplygon::EBlendOperation::Mean );
 
-	sgReductionPipeline->AddMaterialCaster( sgDisplacementCaster, 0 );
+	sgRemeshingPipeline->AddMaterialCaster( sgDisplacementCaster, 0 );
 	
-	// Start the reduction pipeline. 	
-	printf("%s\n", "Start the reduction pipeline.");
-	sgReductionPipeline->RunScene(sgScene, Simplygon::EPipelineRunMode::RunInThisProcess);
+	// Start the remeshing pipeline. 	
+	printf("%s\n", "Start the remeshing pipeline.");
+	sgRemeshingPipeline->RunScene(sgScene, Simplygon::EPipelineRunMode::RunInThisProcess);
 	
 	// Save processed scene. 	
 	printf("%s\n", "Save processed scene.");
-	SaveScene(sg, sgScene, "Output.gltf");
+	SaveScene(sg, sgScene, "RemeshedOutput.gltf");
 	
 	// Create an attribute tessellation tool object. 
 	Simplygon::spAttributeTessellation sgAttributeTessellation = sg->CreateAttributeTessellation();
@@ -194,7 +196,7 @@ void RunReductionWithTessellatedAttributes(Simplygon::ISimplygon* sg)
 	
 	// Save the tessellated copy of the scene. 	
 	printf("%s\n", "Save the tessellated copy of the scene.");
-	SaveScene(sg, sgTessellatedScene, "TessellatedOutput.obj");
+	SaveScene(sg, sgTessellatedScene, "RemeshedTessellatedOutput.obj");
 	
 	// Check log for any warnings or errors. 	
 	printf("%s\n", "Check log for any warnings or errors.");
@@ -211,7 +213,7 @@ int main()
 		return int(initval);
 	}
 
-	RunReductionWithTessellatedAttributes(sg);
+	RunRemeshingWithTessellatedAttributes(sg);
 
 	Simplygon::Deinitialize(sg);
 

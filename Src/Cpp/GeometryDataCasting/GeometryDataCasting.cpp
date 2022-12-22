@@ -137,7 +137,7 @@ void RunGeometryDataDasting(Simplygon::ISimplygon* sg)
 	sgGeometryData_CoordsCasterSettings->SetGeometryDataFieldIndex( 0 );
 
 	sgGeometryData_CoordsCaster->RunProcessing();
-	std::string geometrydata_coordsTextureFilePath = sgGeometryData_CoordsCaster->GetOutputFilePath();
+	std::string geometrydata_coordsTextureFilePath = sgGeometryData_CoordsCaster->GetOutputFilePath().c_str();
 	
 	// Setup and run the geometry data caster casting Normals to a texture. 	
 	printf("%s\n", "Setup and run the geometry data caster casting Normals to a texture.");
@@ -156,7 +156,7 @@ void RunGeometryDataDasting(Simplygon::ISimplygon* sg)
 	sgGeometryData_NormalsCasterSettings->SetGeometryDataFieldIndex( 0 );
 
 	sgGeometryData_NormalsCaster->RunProcessing();
-	std::string geometrydata_normalsTextureFilePath = sgGeometryData_NormalsCaster->GetOutputFilePath();
+	std::string geometrydata_normalsTextureFilePath = sgGeometryData_NormalsCaster->GetOutputFilePath().c_str();
 	
 	// Setup and run the geometry data caster casting MaterialIds to a texture. 	
 	printf("%s\n", "Setup and run the geometry data caster casting MaterialIds to a texture.");
@@ -175,7 +175,7 @@ void RunGeometryDataDasting(Simplygon::ISimplygon* sg)
 	sgGeometryData_MaterialIdsCasterSettings->SetGeometryDataFieldIndex( 0 );
 
 	sgGeometryData_MaterialIdsCaster->RunProcessing();
-	std::string geometrydata_materialidsTextureFilePath = sgGeometryData_MaterialIdsCaster->GetOutputFilePath();
+	std::string geometrydata_materialidsTextureFilePath = sgGeometryData_MaterialIdsCaster->GetOutputFilePath().c_str();
 	
 	// Update scene with new casted textures. 
 	Simplygon::spMaterialTable sgMaterialTable = sg->CreateMaterialTable();

@@ -22,6 +22,7 @@ public class Program
         Simplygon.spScene sgScene = sgSceneImporter.GetScene();
         return sgScene;
     }
+
     static void SaveScene(Simplygon.ISimplygon sg, Simplygon.spScene sgScene, string path)
     {
         // Create scene exporter. 
@@ -37,6 +38,7 @@ public class Program
             throw new System.Exception("Failed to save scene.");
         }
     }
+
     static void CheckLog(Simplygon.ISimplygon sg)
     {
         // Check if any errors occurred. 
@@ -85,36 +87,38 @@ public class Program
             Console.WriteLine("No warnings.");
         }
     }
-    static void RunReductionWithTessellatedAttributes(Simplygon.ISimplygon sg)
+
+    static void RunRemeshingWithTessellatedAttributes(Simplygon.ISimplygon sg)
     {
         // Load scene to process.         
         Console.WriteLine("Load scene to process.");
         Simplygon.spScene sgScene = LoadScene(sg, "../../../Assets/SimplygonMan/SimplygonMan.obj");
         
-        // Create the reduction pipeline. 
-        using Simplygon.spReductionPipeline sgReductionPipeline = sg.CreateReductionPipeline();
+        // Create the remeshing pipeline. 
+        using Simplygon.spRemeshingPipeline sgRemeshingPipeline = sg.CreateRemeshingPipeline();
         
         // Fetch all the needed settings objects for the processing, including the attribute 
         // tessellation settings, which we will use to set up the attribute tessellation on the processed 
         // mesh. 
-        using Simplygon.spReductionSettings sgReductionSettings = sgReductionPipeline.GetReductionSettings();
-        using Simplygon.spAttributeTessellationSettings sgAttributeTessellationSettings = sgReductionPipeline.GetAttributeTessellationSettings();
-        using Simplygon.spMappingImageSettings sgMappingImageSettings = sgReductionPipeline.GetMappingImageSettings();
+        using Simplygon.spRemeshingSettings sgRemeshingSettings = sgRemeshingPipeline.GetRemeshingSettings();
+        using Simplygon.spAttributeTessellationSettings sgAttributeTessellationSettings = sgRemeshingPipeline.GetAttributeTessellationSettings();
+        using Simplygon.spMappingImageSettings sgMappingImageSettings = sgRemeshingPipeline.GetMappingImageSettings();
         
-        // Set reduction target to triangle ratio with a ratio of 25% of the original mesh. 
-        sgReductionSettings.SetReductionTargets( Simplygon.EStopCondition.All, true, false, false, false );
-        sgReductionSettings.SetReductionTargetTriangleRatio( 0.25f );
+        // Set on-screen size target for remeshing. 
+        sgRemeshingSettings.SetOnScreenSize( 500 );
+        sgRemeshingSettings.SetGeometricalAccuracy( 2.0f );
         
         // Get the attribute tessellation settings. The displacement data will be cast into a 
         // tessellated displacement attribute. In this example we use relative area as the density 
         // setting, which means that triangles are tessellated based on the size of the triangle, so that 
         // the tessellated attributes roughly take up the same area. The value is normalized and scale 
-        // independent, so the total area of all the subvalues will add up to the area 1. We set the maximum 
-        // area per value to 1/100000, which means that there will be at least 100000 values total in the 
-        // scene. 
+        // independent, so the total area of all the subvalues will add up to the normalized value 1. We set 
+        // the maximum area per value to 1/1000000, which means that there will be at least 1000000 values 
+        // total in the scene, unless we cap the total number of values with MaxTotalValuesCount or 
+        // MaxTessellationLevel. 
         sgAttributeTessellationSettings.SetEnableAttributeTessellation( true );
         sgAttributeTessellationSettings.SetAttributeTessellationDensityMode( Simplygon.EAttributeTessellationDensityMode.RelativeArea );
-        sgAttributeTessellationSettings.SetMaxAreaOfTessellatedValue( 0.00001f );
+        sgAttributeTessellationSettings.SetMaxAreaOfTessellatedValue( 0.000001f );
         sgAttributeTessellationSettings.SetOnlyAllowOneLevelOfDifference( true );
         sgAttributeTessellationSettings.SetMinTessellationLevel( 0 );
         sgAttributeTessellationSettings.SetMaxTessellationLevel( 5 );
@@ -124,6 +128,7 @@ public class Program
         // materials to the new reduced object, and also to cast the displacement data from the original 
         // object into the tessellated attributes of the processed mesh. 
         sgMappingImageSettings.SetGenerateMappingImage( true );
+        sgMappingImageSettings.SetGenerateTexCoords( true );
         sgMappingImageSettings.SetApplyNewMaterialIds( true );
         sgMappingImageSettings.SetGenerateTangents( true );
         sgMappingImageSettings.SetUseFullRetexturing( true );
@@ -144,7 +149,7 @@ public class Program
         sgDiffuseCasterSettings.SetMaterialChannel( "Diffuse" );
         sgDiffuseCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat.PNG );
 
-        sgReductionPipeline.AddMaterialCaster( sgDiffuseCaster, 0 );
+        sgRemeshingPipeline.AddMaterialCaster( sgDiffuseCaster, 0 );
         
         // Add a normals texture caster to the pipeline. This will cast the normals in the original scene 
         // into a normal map in the output scene. 
@@ -155,7 +160,7 @@ public class Program
         sgNormalsCasterSettings.SetGenerateTangentSpaceNormals( true );
         sgNormalsCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat.PNG );
 
-        sgReductionPipeline.AddMaterialCaster( sgNormalsCaster, 0 );
+        sgRemeshingPipeline.AddMaterialCaster( sgNormalsCaster, 0 );
         
         // Add a displacement caster to the pipeline. This will cast the displacement values, but instead 
         // of casting to a texture, it will cast into the tessellated attributes. 
@@ -171,15 +176,15 @@ public class Program
         sgDisplacementCasterSettings.GetAttributeTessellationSamplingSettings().SetSupersamplingCount( 16 );
         sgDisplacementCasterSettings.GetAttributeTessellationSamplingSettings().SetBlendOperation( Simplygon.EBlendOperation.Mean );
 
-        sgReductionPipeline.AddMaterialCaster( sgDisplacementCaster, 0 );
+        sgRemeshingPipeline.AddMaterialCaster( sgDisplacementCaster, 0 );
         
-        // Start the reduction pipeline.         
-        Console.WriteLine("Start the reduction pipeline.");
-        sgReductionPipeline.RunScene(sgScene, Simplygon.EPipelineRunMode.RunInThisProcess);
+        // Start the remeshing pipeline.         
+        Console.WriteLine("Start the remeshing pipeline.");
+        sgRemeshingPipeline.RunScene(sgScene, Simplygon.EPipelineRunMode.RunInThisProcess);
         
         // Save processed scene.         
         Console.WriteLine("Save processed scene.");
-        SaveScene(sg, sgScene, "Output.gltf");
+        SaveScene(sg, sgScene, "RemeshedOutput.gltf");
         
         // Create an attribute tessellation tool object. 
         using Simplygon.spAttributeTessellation sgAttributeTessellation = sg.CreateAttributeTessellation();
@@ -190,12 +195,13 @@ public class Program
         
         // Save the tessellated copy of the scene.         
         Console.WriteLine("Save the tessellated copy of the scene.");
-        SaveScene(sg, sgTessellatedScene, "TessellatedOutput.obj");
+        SaveScene(sg, sgTessellatedScene, "RemeshedTessellatedOutput.obj");
         
         // Check log for any warnings or errors.         
         Console.WriteLine("Check log for any warnings or errors.");
         CheckLog(sg);
     }
+
     static int Main(string[] args)
     {
         using var sg = Simplygon.Loader.InitSimplygon(out var errorCode, out var errorMessage);
@@ -204,8 +210,9 @@ public class Program
             Console.WriteLine( $"Failed to initialize Simplygon: ErrorCode({(int)errorCode}) {errorMessage}" );
             return (int)errorCode;
         }
-        RunReductionWithTessellatedAttributes(sg);
+        RunRemeshingWithTessellatedAttributes(sg);
 
         return 0;
     }
+
 }

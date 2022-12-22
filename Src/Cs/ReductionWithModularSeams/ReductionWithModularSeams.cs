@@ -22,6 +22,7 @@ public class Program
         Simplygon.spScene sgScene = sgSceneImporter.GetScene();
         return sgScene;
     }
+
     static void SaveScene(Simplygon.ISimplygon sg, Simplygon.spScene sgScene, string path)
     {
         // Create scene exporter. 
@@ -37,6 +38,7 @@ public class Program
             throw new System.Exception("Failed to save scene.");
         }
     }
+
     static void CheckLog(Simplygon.ISimplygon sg)
     {
         // Check if any errors occurred. 
@@ -85,6 +87,7 @@ public class Program
             Console.WriteLine("No warnings.");
         }
     }
+
     static Simplygon.spGeometryDataCollection ExtractGeometriesInScene(Simplygon.ISimplygon sg, Simplygon.spScene sgModularAssetsScene)
     {
         // Extract all geometries in the scene into individual geometries 
@@ -103,6 +106,7 @@ public class Program
         }
         return sgGeometryDataCollection;
     }
+
     static void DebugModularSeams(Simplygon.ISimplygon sg, bool outputDebugInfo, Simplygon.spModularSeams sgModularSeams)
     {
         if (outputDebugInfo)
@@ -145,6 +149,7 @@ public class Program
             }
         }
     }
+
     static void ModifyReductionSettings(Simplygon.spReductionSettings sgReductionSettings, float triangleRatio, float maxDeviation)
     {
         sgReductionSettings.SetKeepSymmetry( true );
@@ -169,6 +174,7 @@ public class Program
         sgReductionSettings.SetReductionTargetMaxDeviation( maxDeviation );
         sgReductionSettings.SetReductionTargets(Simplygon.EStopCondition.All, true, false, true, false);
     }
+
     static void GenerateModularSeams(Simplygon.ISimplygon sg, Simplygon.spScene sgModularAssetsScene)
     {
         Simplygon.spGeometryDataCollection sgGeometryDataCollection = ExtractGeometriesInScene(sg, sgModularAssetsScene);
@@ -211,6 +217,7 @@ public class Program
         string modularSeamsPath = string.Join("", new string[] { "output\\", "ModularAssets.modseam" });
         sgModularSeams.SaveToFile(modularSeamsPath);
     }
+
     static Simplygon.spModularSeams LoadModularSeams(Simplygon.ISimplygon sg)
     {
         // Load pre-generated modular seams 
@@ -219,6 +226,7 @@ public class Program
         sgModularSeams.LoadFromFile(modularSeamsPath);
         return sgModularSeams;
     }
+
     static void RunReduction(Simplygon.ISimplygon sg, Simplygon.spScene sgModularAssetsScene, Simplygon.spModularSeams sgModularSeams, float triangleRatio, float maxDeviation, float modularSeamReductionRatio, float modularSeamMaxDeviation)
     {
         Simplygon.spGeometryDataCollection sgGeometryDataCollection = ExtractGeometriesInScene(sg, sgModularAssetsScene);
@@ -265,6 +273,7 @@ public class Program
             SaveScene(sg, sgSingleAssetScene, outputName);
         }
     }
+
     static void RunReductionWithModularSeams(Simplygon.ISimplygon sg)
     {
         // Set reduction targets. Stop condition is set to 'All' 
@@ -291,6 +300,7 @@ public class Program
         Console.WriteLine("Check log for any warnings or errors.");
         CheckLog(sg);
     }
+
     static int Main(string[] args)
     {
         using var sg = Simplygon.Loader.InitSimplygon(out var errorCode, out var errorMessage);
@@ -303,4 +313,5 @@ public class Program
 
         return 0;
     }
+
 }

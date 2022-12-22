@@ -32,6 +32,10 @@ Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "BatchingWithSimplygonGrid",
 EndProject
 Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "ColorCasting", "ColorCasting\ColorCasting.vcxproj", "{3AA2C990-094F-474C-A68A-A1BA8BEC95D3}"
 EndProject
+Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "ComputeCasting", "ComputeCasting\ComputeCasting.vcxproj", "{020473E7-602B-40DB-A29C-A1E9ABE63014}"
+EndProject
+Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "ComputeCastingMaterialEvaluationShaderXML", "ComputeCastingMaterialEvaluationShaderXML\ComputeCastingMaterialEvaluationShaderXML.vcxproj", "{51D7B35E-AB66-451F-82BF-4E0926A439A7}"
+EndProject
 Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "DisplacementCasting", "DisplacementCasting\DisplacementCasting.vcxproj", "{72391BD9-11CF-4435-94B2-E009CC731059}"
 EndProject
 Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "ErrorEvent", "ErrorEvent\ErrorEvent.vcxproj", "{6634CF9C-4C2D-47BC-8FBE-93129CEE5E83}"
@@ -39,6 +43,10 @@ EndProject
 Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "GeometryData", "GeometryData\GeometryData.vcxproj", "{FF702EBA-90F2-4328-8464-348B4F31AF6A}"
 EndProject
 Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "GeometryDataCasting", "GeometryDataCasting\GeometryDataCasting.vcxproj", "{B9D73EA1-6FB6-4B9B-A0D6-05F9D1D1915C}"
+EndProject
+Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "HighDensityMeshReduction", "HighDensityMeshReduction\HighDensityMeshReduction.vcxproj", "{DA68D409-F4FB-4200-BCC3-1C933F0DBA77}"
+EndProject
+Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "HighDensityMeshReductionPipeline", "HighDensityMeshReductionPipeline\HighDensityMeshReductionPipeline.vcxproj", "{421B697B-A938-4200-BCC3-0F7AA1FF7F25}"
 EndProject
 Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "ImpostorBillboardCloudFoliage", "ImpostorBillboardCloudFoliage\ImpostorBillboardCloudFoliage.vcxproj", "{BA92BD48-3346-4F1A-AA28-21FD863ED8C8}"
 EndProject
@@ -204,6 +212,14 @@ Global
         {3AA2C990-094F-474C-A68A-A1BA8BEC95D3}.Debug|x64.Build.0 = Debug|x64
         {3AA2C990-094F-474C-A68A-A1BA8BEC95D3}.Release|x64.ActiveCfg = Release|x64
         {3AA2C990-094F-474C-A68A-A1BA8BEC95D3}.Release|x64.Build.0 = Release|x64
+        {020473E7-602B-40DB-A29C-A1E9ABE63014}.Debug|x64.ActiveCfg = Debug|x64
+        {020473E7-602B-40DB-A29C-A1E9ABE63014}.Debug|x64.Build.0 = Debug|x64
+        {020473E7-602B-40DB-A29C-A1E9ABE63014}.Release|x64.ActiveCfg = Release|x64
+        {020473E7-602B-40DB-A29C-A1E9ABE63014}.Release|x64.Build.0 = Release|x64
+        {51D7B35E-AB66-451F-82BF-4E0926A439A7}.Debug|x64.ActiveCfg = Debug|x64
+        {51D7B35E-AB66-451F-82BF-4E0926A439A7}.Debug|x64.Build.0 = Debug|x64
+        {51D7B35E-AB66-451F-82BF-4E0926A439A7}.Release|x64.ActiveCfg = Release|x64
+        {51D7B35E-AB66-451F-82BF-4E0926A439A7}.Release|x64.Build.0 = Release|x64
         {72391BD9-11CF-4435-94B2-E009CC731059}.Debug|x64.ActiveCfg = Debug|x64
         {72391BD9-11CF-4435-94B2-E009CC731059}.Debug|x64.Build.0 = Debug|x64
         {72391BD9-11CF-4435-94B2-E009CC731059}.Release|x64.ActiveCfg = Release|x64
@@ -220,6 +236,14 @@ Global
         {B9D73EA1-6FB6-4B9B-A0D6-05F9D1D1915C}.Debug|x64.Build.0 = Debug|x64
         {B9D73EA1-6FB6-4B9B-A0D6-05F9D1D1915C}.Release|x64.ActiveCfg = Release|x64
         {B9D73EA1-6FB6-4B9B-A0D6-05F9D1D1915C}.Release|x64.Build.0 = Release|x64
+        {DA68D409-F4FB-4200-BCC3-1C933F0DBA77}.Debug|x64.ActiveCfg = Debug|x64
+        {DA68D409-F4FB-4200-BCC3-1C933F0DBA77}.Debug|x64.Build.0 = Debug|x64
+        {DA68D409-F4FB-4200-BCC3-1C933F0DBA77}.Release|x64.ActiveCfg = Release|x64
+        {DA68D409-F4FB-4200-BCC3-1C933F0DBA77}.Release|x64.Build.0 = Release|x64
+        {421B697B-A938-4200-BCC3-0F7AA1FF7F25}.Debug|x64.ActiveCfg = Debug|x64
+        {421B697B-A938-4200-BCC3-0F7AA1FF7F25}.Debug|x64.Build.0 = Debug|x64
+        {421B697B-A938-4200-BCC3-0F7AA1FF7F25}.Release|x64.ActiveCfg = Release|x64
+        {421B697B-A938-4200-BCC3-0F7AA1FF7F25}.Release|x64.Build.0 = Release|x64
         {BA92BD48-3346-4F1A-AA28-21FD863ED8C8}.Debug|x64.ActiveCfg = Debug|x64
         {BA92BD48-3346-4F1A-AA28-21FD863ED8C8}.Debug|x64.Build.0 = Debug|x64
         {BA92BD48-3346-4F1A-AA28-21FD863ED8C8}.Release|x64.ActiveCfg = Release|x64

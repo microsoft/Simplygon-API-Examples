@@ -22,6 +22,7 @@ public class Program
             throw new System.Exception("Failed to save scene.");
         }
     }
+
     static void CheckLog(Simplygon.ISimplygon sg)
     {
         // Check if any errors occurred. 
@@ -70,6 +71,7 @@ public class Program
             Console.WriteLine("No warnings.");
         }
     }
+
     static Simplygon.spGeometryData CreateCube(Simplygon.ISimplygon sg, int materialId)
     {
         const int vertexCount = 8;
@@ -138,6 +140,7 @@ public class Program
         // Return created cube geometry data. 
         return sgGeometryData;
     }
+
     static void RunExample(Simplygon.ISimplygon sg)
     {
         // Create a Simplygon scene. 
@@ -208,6 +211,7 @@ public class Program
         Console.WriteLine("Check log for any warnings or errors.");
         CheckLog(sg);
     }
+
     static int Main(string[] args)
     {
         using var sg = Simplygon.Loader.InitSimplygon(out var errorCode, out var errorMessage);
@@ -220,4 +224,5 @@ public class Program
 
         return 0;
     }
+
 }
