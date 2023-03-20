@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ReductionWithVisibilityCameraFromGeometry")]
-[assembly: AssemblyCopyright("Copyright © Microsoft Corporation 2022")]
+[assembly: AssemblyCopyright("Copyright © Microsoft Corporation 2023")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

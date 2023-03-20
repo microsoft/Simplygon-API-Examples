@@ -1,0 +1,498 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- This is an example file which demos how you can perform a full casting on a non-textured scene, and add required buffers, textures etc in the xml file. -->
+
+<Scene>
+
+	<!-- 
+	The TextureTable is an easy way to add additional needed textures to the scene before running the compute caster
+	There are some caveats to consider: 
+		- Any already existing texture with the same name will be replaced
+		- Textures can only be referenced with a file path (relative or absolute)
+	-->
+
+    <TextureTable>
+        <Texture Name="0_Diffuse" FilePath="../../../Assets/SimplygonMan/dman_arms_d.JPG"/>
+        <Texture Name="1_Diffuse" FilePath="../../../Assets/SimplygonMan/dman_armor_upper_d.JPG"/>
+        <Texture Name="2_Diffuse" FilePath="../../../Assets/SimplygonMan/dman_baselayer_d.JPG"/>
+        <Texture Name="3_Diffuse" FilePath="../../../Assets/SimplygonMan/dman_helmet_d.JPG"/>
+        <Texture Name="4_Diffuse" FilePath="../../../Assets/SimplygonMan/dman_helmet_d.JPG" />
+        <Texture Name="5_Diffuse" FilePath="../../../Assets/SimplygonMan/dman_visor_mask_d.JPG"/>
+        <Texture Name="6_Diffuse" FilePath="../../../Assets/SimplygonMan/dman_legs_logo2.0_d.JPG"/>
+        <Texture Name="7_Diffuse" FilePath="../../../Assets/SimplygonMan/dman_armor_middle_logo2_d.JPG"/>
+        <Texture Name="0_Normals" FilePath="../../../Assets/SimplygonMan/dman_arms_n.JPG" ColorSpace="Linear"/>
+        <Texture Name="1_Normals" FilePath="../../../Assets/SimplygonMan/dman_armor_upper_n.JPG" ColorSpace="Linear"/>
+        <Texture Name="2_Normals" FilePath="../../../Assets/SimplygonMan/dman_baselayer_n.JPG" ColorSpace="Linear"/>
+        <Texture Name="3_Normals" FilePath="../../../Assets/SimplygonMan/dman_helmet_n.JPG" ColorSpace="Linear"/>
+        <Texture Name="4_Normals" FilePath="../../../Assets/SimplygonMan/dman_helmet_n.JPG" ColorSpace="Linear"/>
+        <Texture Name="5_Normals" FilePath="../../../Assets/SimplygonMan/dman_visor_mask_n.JPG" ColorSpace="Linear"/>
+        <Texture Name="6_Normals" FilePath="../../../Assets/SimplygonMan/dman_legs_logo2.0_n.JPG" ColorSpace="Linear"/>
+        <Texture Name="7_Normals" FilePath="../../../Assets/SimplygonMan/dman_armor_middle_logo2_n.JPG" ColorSpace="Linear"/>
+    </TextureTable>
+
+	<!-- 
+	The CustomFields element lists any additional custom fields which should be added to the Scene (as AddCustomField).
+	Note that since the user is responsible for alignment and packing, all fields are added as UnsignedCharArrays, with 
+	a tuple size of 1. 
+	
+	Fields can either reference external files, as shown below (MaterialColorsCustomField.bin), or be embedded in the .xml
+	as a base64 encoded field.
+	
+	In the example field below, we encode one 20 byte struct per material, so the input .bin file is 8 * 20 = 160 bytes
+	-->
+
+	<CustomFields>
+        <CustomField Name="MaterialColorsCustomField" FilePath="MaterialColorsCustomField.bin"/>
+    </CustomFields>
+
+	<!-- 
+	The MaterialTable specifies a MaterialEvaluationShader per Material. Note that the materials must already exist in the scene's 
+	material table, since the geometry material ids drive the actual material casting. However, each Material do not need to be
+	represented, as each scene descriptor file adds to the current scene, so there can be one file for all materials which 
+	are to be cast, one file for each material, or some other combination, as long as all materials are set up before casting.
+	-->	
+	
+	<MaterialTable>
+        <Material Name="armsSG1">
+            <MaterialEvaluationShader Version="0.4.0" ShaderLanguage="HLSL" HeaderFilePath="HeaderCode.hlsl" ShaderFilePath="CasterCode.hlsl">
+
+				<!-- 
+				Example of using indices into TexCoord field. In this case using field with index 0 
+				-->
+                <Attribute Name="TexCoord" FieldType="TexCoords" FieldName="0" FieldFormat="F32vec2"/>
+				
+				<!-- 
+				Bind input tangent space, which is needed for casting normals.
+				Note that in this case, there are only one field per tangent, bitangent and normal, 
+				so the FieldName is not needed.
+				-->
+                <Attribute Name="Tangent" FieldType="Tangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Bitangent" FieldType="Bitangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Normal" FieldType="Normals" FieldFormat="F32vec3"/>
+				
+				<!--
+				Define evaluation functions for calculating Diffuse and Normals channels. 
+				You can add an evaluation function for each channel to be cast.
+				-->
+				<EvaluationFunction Channel="Diffuse" EntryPoint="CalculateDiffuseChannel"/>
+                <EvaluationFunction Channel="Normals" EntryPoint="CalculateNormalsChannel"/>
+				
+				<!-- 
+				Example of creating a sampler called "DiffuseSampler"  
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="SamplerMirror2D" MinFilter="Linear" MagFilter="Linear" AddressU="MirrorRepeat" AddressV="MirrorRepeat" AddressW="MirrorRepeat" />
+                <ShaderParameterSampler Name="DiffuseSampler" SamplerState="SamplerMirror2D"/>
+
+				<!-- 
+				Example of creating a sampler called "NormalSampler" 
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="Sampler2D" MinFilter="Linear" MagFilter="Linear" AddressU="Repeat" AddressV="Repeat" AddressW="Repeat" />
+                <ShaderParameterSampler Name="NormalSampler" SamplerState="Sampler2D"/>
+				
+				<!-- 
+				Example of using texture array 
+				-->
+                <ShaderParameterTextureArray Name="CastingTexturesArray" Count="2">
+                    <TextureSlot Index="0" TextureName="0_Diffuse"/>
+                    <TextureSlot Index="1" TextureName="0_Normals"/>
+                </ShaderParameterTextureArray>
+				
+				<!-- 
+				Example of referencing a custom field in the scene.
+				This is used in the shader to modify the color value of the Diffuse color 
+				-->
+				<ShaderParameterBuffer Name="CustomBuffer" FieldName="MaterialColorsCustomField" Type="customStruct"/>
+				
+            </MaterialEvaluationShader>
+        </Material>
+
+        <Material Name="body_upperSG1">
+            <MaterialEvaluationShader Version="0.4.0" ShaderLanguage="HLSL" HeaderFilePath="HeaderCode.hlsl" ShaderFilePath="CasterCode.hlsl">
+
+				<!-- 
+				Example of using indices into TexCoord field. In this case using field with index 0 
+				-->
+                <Attribute Name="TexCoord" FieldType="TexCoords" FieldName="0" FieldFormat="F32vec2"/>
+				
+				<!-- 
+				Bind input tangent space, which is needed for casting normals.
+				Note that in this case, there are only one field per tangent, bitangent and normal, 
+				so the FieldName is not needed.
+				-->
+                <Attribute Name="Tangent" FieldType="Tangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Bitangent" FieldType="Bitangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Normal" FieldType="Normals" FieldFormat="F32vec3"/>
+				
+				<!--
+				Define evaluation functions for calculating Diffuse and Normals channels. 
+				You can add an evaluation function for each channel to be cast.
+				-->
+				<EvaluationFunction Channel="Diffuse" EntryPoint="CalculateDiffuseChannel"/>
+                <EvaluationFunction Channel="Normals" EntryPoint="CalculateNormalsChannel"/>
+				
+				<!-- 
+				Example of creating a sampler called "DiffuseSampler"  
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="SamplerMirror2D" MinFilter="Linear" MagFilter="Linear" AddressU="MirrorRepeat" AddressV="MirrorRepeat" AddressW="MirrorRepeat" />
+                <ShaderParameterSampler Name="DiffuseSampler" SamplerState="SamplerMirror2D"/>
+
+				<!-- 
+				Example of creating a sampler called "NormalSampler" 
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="Sampler2D" MinFilter="Linear" MagFilter="Linear" AddressU="Repeat" AddressV="Repeat" AddressW="Repeat" />
+                <ShaderParameterSampler Name="NormalSampler" SamplerState="Sampler2D"/>
+				
+				<!-- 
+				Example of using texture array 
+				-->
+                <ShaderParameterTextureArray Name="CastingTexturesArray" Count="2">
+                    <TextureSlot Index="0" TextureName="1_Diffuse"/>
+                    <TextureSlot Index="1" TextureName="1_Normals"/>
+                </ShaderParameterTextureArray>
+				
+				<!-- 
+				Example of referencing a custom field in the scene.
+				This is used in the shader to modify the color value of the Diffuse color 
+				-->
+				<ShaderParameterBuffer Name="CustomBuffer" FieldName="MaterialColorsCustomField" Type="customStruct"/>
+				
+            </MaterialEvaluationShader>
+        </Material>
+
+        <Material Name="clothSG1">
+            <MaterialEvaluationShader Version="0.4.0" ShaderLanguage="HLSL" HeaderFilePath="HeaderCode.hlsl" ShaderFilePath="CasterCode.hlsl">
+
+				<!-- 
+				Example of using indices into TexCoord field. In this case using field with index 0 
+				-->
+                <Attribute Name="TexCoord" FieldType="TexCoords" FieldName="0" FieldFormat="F32vec2"/>
+				
+				<!-- 
+				Bind input tangent space, which is needed for casting normals.
+				Note that in this case, there are only one field per tangent, bitangent and normal, 
+				so the FieldName is not needed.
+				-->
+                <Attribute Name="Tangent" FieldType="Tangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Bitangent" FieldType="Bitangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Normal" FieldType="Normals" FieldFormat="F32vec3"/>
+				
+				<!--
+				Define evaluation functions for calculating Diffuse and Normals channels. 
+				You can add an evaluation function for each channel to be cast.
+				-->
+				<EvaluationFunction Channel="Diffuse" EntryPoint="CalculateDiffuseChannel"/>
+                <EvaluationFunction Channel="Normals" EntryPoint="CalculateNormalsChannel"/>
+				
+				<!-- 
+				Example of creating a sampler called "DiffuseSampler"  
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="SamplerMirror2D" MinFilter="Linear" MagFilter="Linear" AddressU="MirrorRepeat" AddressV="MirrorRepeat" AddressW="MirrorRepeat" />
+                <ShaderParameterSampler Name="DiffuseSampler" SamplerState="SamplerMirror2D"/>
+
+				<!-- 
+				Example of creating a sampler called "NormalSampler" 
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="Sampler2D" MinFilter="Linear" MagFilter="Linear" AddressU="Repeat" AddressV="Repeat" AddressW="Repeat" />
+                <ShaderParameterSampler Name="NormalSampler" SamplerState="Sampler2D"/>
+				
+				<!-- 
+				Example of using texture array 
+				-->
+                <ShaderParameterTextureArray Name="CastingTexturesArray" Count="2">
+                    <TextureSlot Index="0" TextureName="2_Diffuse"/>
+                    <TextureSlot Index="1" TextureName="2_Normals"/>
+                </ShaderParameterTextureArray>
+				
+				<!-- 
+				Example of referencing a custom field in the scene.
+				This is used in the shader to modify the color value of the Diffuse color 
+				-->
+				<ShaderParameterBuffer Name="CustomBuffer" FieldName="MaterialColorsCustomField" Type="customStruct"/>
+
+            </MaterialEvaluationShader>
+        </Material>
+
+        <Material Name="helmetSG">
+            <MaterialEvaluationShader Version="0.4.0" ShaderLanguage="HLSL" HeaderFilePath="HeaderCode.hlsl" ShaderFilePath="CasterCode.hlsl">
+
+				<!-- 
+				Example of using indices into TexCoord field. In this case using field with index 0 
+				-->
+                <Attribute Name="TexCoord" FieldType="TexCoords" FieldName="0" FieldFormat="F32vec2"/>
+				
+				<!-- 
+				Bind input tangent space, which is needed for casting normals.
+				Note that in this case, there are only one field per tangent, bitangent and normal, 
+				so the FieldName is not needed.
+				-->
+                <Attribute Name="Tangent" FieldType="Tangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Bitangent" FieldType="Bitangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Normal" FieldType="Normals" FieldFormat="F32vec3"/>
+				
+				<!--
+				Define evaluation functions for calculating Diffuse and Normals channels. 
+				You can add an evaluation function for each channel to be cast.
+				-->
+				<EvaluationFunction Channel="Diffuse" EntryPoint="CalculateDiffuseChannel"/>
+                <EvaluationFunction Channel="Normals" EntryPoint="CalculateNormalsChannel"/>
+				
+				<!-- 
+				Example of creating a sampler called "DiffuseSampler"  
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="SamplerMirror2D" MinFilter="Linear" MagFilter="Linear" AddressU="MirrorRepeat" AddressV="MirrorRepeat" AddressW="MirrorRepeat" />
+                <ShaderParameterSampler Name="DiffuseSampler" SamplerState="SamplerMirror2D"/>
+
+				<!-- 
+				Example of creating a sampler called "NormalSampler" 
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="Sampler2D" MinFilter="Linear" MagFilter="Linear" AddressU="Repeat" AddressV="Repeat" AddressW="Repeat" />
+                <ShaderParameterSampler Name="NormalSampler" SamplerState="Sampler2D"/>
+				
+				<!-- 
+				Example of using texture array 
+				-->
+                <ShaderParameterTextureArray Name="CastingTexturesArray" Count="2">
+                    <TextureSlot Index="0" TextureName="3_Diffuse"/>
+                    <TextureSlot Index="1" TextureName="3_Normals"/>
+                </ShaderParameterTextureArray>
+
+				<!-- 
+				Example of referencing a custom field in the scene.
+				This is used in the shader to modify the color value of the Diffuse color 
+				-->
+				<ShaderParameterBuffer Name="CustomBuffer" FieldName="MaterialColorsCustomField" Type="customStruct"/>
+
+            </MaterialEvaluationShader>
+        </Material>
+
+        <Material Name="helmetSG1">
+            <MaterialEvaluationShader Version="0.4.0" ShaderLanguage="HLSL" HeaderFilePath="HeaderCode.hlsl" ShaderFilePath="CasterCode.hlsl">
+
+				<!-- 
+				Example of using indices into TexCoord field. In this case using field with index 0 
+				-->
+                <Attribute Name="TexCoord" FieldType="TexCoords" FieldName="0" FieldFormat="F32vec2"/>
+				
+				<!-- 
+				Bind input tangent space, which is needed for casting normals.
+				Note that in this case, there are only one field per tangent, bitangent and normal, 
+				so the FieldName is not needed.
+				-->
+                <Attribute Name="Tangent" FieldType="Tangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Bitangent" FieldType="Bitangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Normal" FieldType="Normals" FieldFormat="F32vec3"/>
+				
+				<!--
+				Define evaluation functions for calculating Diffuse and Normals channels. 
+				You can add an evaluation function for each channel to be cast.
+				-->
+				<EvaluationFunction Channel="Diffuse" EntryPoint="CalculateDiffuseChannel"/>
+                <EvaluationFunction Channel="Normals" EntryPoint="CalculateNormalsChannel"/>
+				
+				<!-- 
+				Example of creating a sampler called "DiffuseSampler"  
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="SamplerMirror2D" MinFilter="Linear" MagFilter="Linear" AddressU="MirrorRepeat" AddressV="MirrorRepeat" AddressW="MirrorRepeat" />
+                <ShaderParameterSampler Name="DiffuseSampler" SamplerState="SamplerMirror2D"/>
+
+				<!-- 
+				Example of creating a sampler called "NormalSampler" 
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="Sampler2D" MinFilter="Linear" MagFilter="Linear" AddressU="Repeat" AddressV="Repeat" AddressW="Repeat" />
+                <ShaderParameterSampler Name="NormalSampler" SamplerState="Sampler2D"/>
+				
+				<!-- 
+				Example of using texture array 
+				-->
+                <ShaderParameterTextureArray Name="CastingTexturesArray" Count="2">
+                    <TextureSlot Index="0" TextureName="4_Diffuse"/>
+                    <TextureSlot Index="1" TextureName="4_Normals"/>
+                </ShaderParameterTextureArray>
+
+				<!-- 
+				Example of referencing a custom field in the scene.
+				This is used in the shader to modify the color value of the Diffuse color 
+				-->
+				<ShaderParameterBuffer Name="CustomBuffer" FieldName="MaterialColorsCustomField" Type="customStruct"/>
+
+            </MaterialEvaluationShader>
+        </Material>
+
+        <Material Name="helmet_visorSG1">
+            <MaterialEvaluationShader Version="0.4.0" ShaderLanguage="HLSL" HeaderFilePath="HeaderCode.hlsl" ShaderFilePath="CasterCode.hlsl">
+
+				<!-- 
+				Example of using indices into TexCoord field. In this case using field with index 0 
+				-->
+                <Attribute Name="TexCoord" FieldType="TexCoords" FieldName="0" FieldFormat="F32vec2"/>
+				
+				<!-- 
+				Bind input tangent space, which is needed for casting normals.
+				Note that in this case, there are only one field per tangent, bitangent and normal, 
+				so the FieldName is not needed.
+				-->
+                <Attribute Name="Tangent" FieldType="Tangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Bitangent" FieldType="Bitangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Normal" FieldType="Normals" FieldFormat="F32vec3"/>
+				
+				<!--
+				Define evaluation functions for calculating Diffuse and Normals channels. 
+				You can add an evaluation function for each channel to be cast.
+				-->
+				<EvaluationFunction Channel="Diffuse" EntryPoint="CalculateDiffuseChannel"/>
+                <EvaluationFunction Channel="Normals" EntryPoint="CalculateNormalsChannel"/>
+				
+				<!-- 
+				Example of creating a sampler called "DiffuseSampler"  
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="SamplerMirror2D" MinFilter="Linear" MagFilter="Linear" AddressU="MirrorRepeat" AddressV="MirrorRepeat" AddressW="MirrorRepeat" />
+                <ShaderParameterSampler Name="DiffuseSampler" SamplerState="SamplerMirror2D"/>
+
+				<!-- 
+				Example of creating a sampler called "NormalSampler" 
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="Sampler2D" MinFilter="Linear" MagFilter="Linear" AddressU="Repeat" AddressV="Repeat" AddressW="Repeat" />
+                <ShaderParameterSampler Name="NormalSampler" SamplerState="Sampler2D"/>
+				
+				<!-- 
+				Example of using texture array 
+				-->
+                <ShaderParameterTextureArray Name="CastingTexturesArray" Count="2">
+                    <TextureSlot Index="0" TextureName="5_Diffuse"/>
+                    <TextureSlot Index="1" TextureName="5_Normals"/>
+                </ShaderParameterTextureArray>
+
+				<!-- 
+				Example of referencing a custom field in the scene.
+				This is used in the shader to modify the color value of the Diffuse color 
+				-->
+				<ShaderParameterBuffer Name="CustomBuffer" FieldName="MaterialColorsCustomField" Type="customStruct"/>
+
+            </MaterialEvaluationShader>
+        </Material>
+
+        <Material Name="legsSG1">
+            <MaterialEvaluationShader Version="0.4.0" ShaderLanguage="HLSL" HeaderFilePath="HeaderCode.hlsl" ShaderFilePath="CasterCode.hlsl">
+
+				<!-- 
+				Example of using indices into TexCoord field. In this case using field with index 0 
+				-->
+                <Attribute Name="TexCoord" FieldType="TexCoords" FieldName="0" FieldFormat="F32vec2"/>
+				
+				<!-- 
+				Bind input tangent space, which is needed for casting normals.
+				Note that in this case, there are only one field per tangent, bitangent and normal, 
+				so the FieldName is not needed.
+				-->
+                <Attribute Name="Tangent" FieldType="Tangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Bitangent" FieldType="Bitangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Normal" FieldType="Normals" FieldFormat="F32vec3"/>
+				
+				<!--
+				Define evaluation functions for calculating Diffuse and Normals channels. 
+				You can add an evaluation function for each channel to be cast.
+				-->
+				<EvaluationFunction Channel="Diffuse" EntryPoint="CalculateDiffuseChannel"/>
+                <EvaluationFunction Channel="Normals" EntryPoint="CalculateNormalsChannel"/>
+				
+				<!-- 
+				Example of creating a sampler called "DiffuseSampler"  
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="SamplerMirror2D" MinFilter="Linear" MagFilter="Linear" AddressU="MirrorRepeat" AddressV="MirrorRepeat" AddressW="MirrorRepeat" />
+                <ShaderParameterSampler Name="DiffuseSampler" SamplerState="SamplerMirror2D"/>
+
+				<!-- 
+				Example of creating a sampler called "NormalSampler" 
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="Sampler2D" MinFilter="Linear" MagFilter="Linear" AddressU="Repeat" AddressV="Repeat" AddressW="Repeat" />
+                <ShaderParameterSampler Name="NormalSampler" SamplerState="Sampler2D"/>
+				
+				<!-- 
+				Example of using texture array 
+				-->
+                <ShaderParameterTextureArray Name="CastingTexturesArray" Count="2">
+                    <TextureSlot Index="0" TextureName="6_Diffuse"/>
+                    <TextureSlot Index="1" TextureName="6_Normals"/>
+                </ShaderParameterTextureArray>
+
+				<!-- 
+				Example of referencing a custom field in the scene.
+				This is used in the shader to modify the color value of the Diffuse color 
+				-->
+				<ShaderParameterBuffer Name="CustomBuffer" FieldName="MaterialColorsCustomField" Type="customStruct"/>
+
+            </MaterialEvaluationShader>
+        </Material>
+
+        <Material Name="middleSG1">
+            <MaterialEvaluationShader Version="0.4.0" ShaderLanguage="HLSL" HeaderFilePath="HeaderCode.hlsl" ShaderFilePath="CasterCode.hlsl">
+
+				<!-- 
+				Example of using indices into TexCoord field. In this case using field with index 0 
+				-->
+                <Attribute Name="TexCoord" FieldType="TexCoords" FieldName="0" FieldFormat="F32vec2"/>
+				
+				<!-- 
+				Bind input tangent space, which is needed for casting normals.
+				Note that in this case, there are only one field per tangent, bitangent and normal, 
+				so the FieldName is not needed.
+				-->
+                <Attribute Name="Tangent" FieldType="Tangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Bitangent" FieldType="Bitangents" FieldFormat="F32vec3"/>
+                <Attribute Name="Normal" FieldType="Normals" FieldFormat="F32vec3"/>
+				
+				<!--
+				Define evaluation functions for calculating Diffuse and Normals channels. 
+				You can add an evaluation function for each channel to be cast.
+				-->
+				<EvaluationFunction Channel="Diffuse" EntryPoint="CalculateDiffuseChannel"/>
+                <EvaluationFunction Channel="Normals" EntryPoint="CalculateNormalsChannel"/>
+				
+				<!-- 
+				Example of creating a sampler called "DiffuseSampler"  
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="SamplerMirror2D" MinFilter="Linear" MagFilter="Linear" AddressU="MirrorRepeat" AddressV="MirrorRepeat" AddressW="MirrorRepeat" />
+                <ShaderParameterSampler Name="DiffuseSampler" SamplerState="SamplerMirror2D"/>
+
+				<!-- 
+				Example of creating a sampler called "NormalSampler" 
+				Note that the settings are contrived, and only there to examplify how using multiple sampler states are possible.
+				-->
+                <ShaderParameterSamplerState Name="Sampler2D" MinFilter="Linear" MagFilter="Linear" AddressU="Repeat" AddressV="Repeat" AddressW="Repeat" />
+                <ShaderParameterSampler Name="NormalSampler" SamplerState="Sampler2D"/>
+				
+				<!-- 
+				Example of using texture array 
+				-->
+                <ShaderParameterTextureArray Name="CastingTexturesArray" Count="2">
+                    <TextureSlot Index="0" TextureName="7_Diffuse"/>
+                    <TextureSlot Index="1" TextureName="7_Normals"/>
+                </ShaderParameterTextureArray>
+
+				<!-- 
+				Example of referencing a custom field in the scene.
+				This is used in the shader to modify the color value of the Diffuse color 
+				-->
+				<ShaderParameterBuffer Name="CustomBuffer" FieldName="MaterialColorsCustomField" Type="customStruct"/>
+
+            </MaterialEvaluationShader>
+        </Material>
+
+	</MaterialTable>
+	
+</Scene>
