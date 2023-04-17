@@ -71,6 +71,12 @@ void CheckLog(Simplygon::ISimplygon* sg)
 	{
 		printf("%s\n", "No warnings.");
 	}
+	
+	// Error out if Simplygon has errors. 
+	if (hasErrors)
+	{
+		throw std::exception("Processing failed with an error");
+	}
 }
 
 void RunExample1(Simplygon::ISimplygon* sg)

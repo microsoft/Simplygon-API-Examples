@@ -48,6 +48,10 @@ def CheckLog(sg: Simplygon.ISimplygon):
             sg.ClearWarningMessages()
     else:
         print('No warnings.')
+    
+    # Error out if Simplygon has errors. 
+    if hasErrors:
+        raise Exception('Processing failed with an error')
 
 def RunReduction(sg: Simplygon.ISimplygon):
     # Set the custom error handler to the Simplygon interface. 

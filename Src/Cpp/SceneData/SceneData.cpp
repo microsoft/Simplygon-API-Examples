@@ -71,6 +71,12 @@ void CheckLog(Simplygon::ISimplygon* sg)
 	{
 		printf("%s\n", "No warnings.");
 	}
+	
+	// Error out if Simplygon has errors. 
+	if (hasErrors)
+	{
+		throw std::exception("Processing failed with an error");
+	}
 }
 
 Simplygon::spGeometryData CreateCube(Simplygon::ISimplygon* sg, Simplygon::rid materialId)

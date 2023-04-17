@@ -55,6 +55,12 @@ void CheckLog(Simplygon::ISimplygon* sg)
 	{
 		printf("%s\n", "No warnings.");
 	}
+	
+	// Error out if Simplygon has errors. 
+	if (hasErrors)
+	{
+		throw std::exception("Processing failed with an error");
+	}
 }
 
 void RunReduction(Simplygon::ISimplygon* sg, std::string inputFile, std::string outputFile)

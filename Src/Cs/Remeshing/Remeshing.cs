@@ -86,6 +86,12 @@ public class Program
         {
             Console.WriteLine("No warnings.");
         }
+        
+        // Error out if Simplygon has errors. 
+        if (hasErrors)
+        {
+            throw new System.Exception("Processing failed with an error");
+        }
     }
 
     static void RunRemeshing(Simplygon.ISimplygon sg)
