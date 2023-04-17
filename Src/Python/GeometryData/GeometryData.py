@@ -55,6 +55,10 @@ def CheckLog(sg: Simplygon.ISimplygon):
             sg.ClearWarningMessages()
     else:
         print('No warnings.')
+    
+    # Error out if Simplygon has errors. 
+    if hasErrors:
+        raise Exception('Processing failed with an error')
 
 def RunExample1(sg: Simplygon.ISimplygon):
     # 4 separate triangles, with 3 vertices each and 3 sets of UV coordinates each. They make up 2 

@@ -67,6 +67,10 @@ def CheckLog(sg: Simplygon.ISimplygon):
             sg.ClearWarningMessages()
     else:
         print('No warnings.')
+    
+    # Error out if Simplygon has errors. 
+    if hasErrors:
+        raise Exception('Processing failed with an error')
 
 def SaveMaterialEvaluationShaderXML(sg: Simplygon.ISimplygon, xmlFilePath: str):
     # Create an evaluation shader, and save to xml. 

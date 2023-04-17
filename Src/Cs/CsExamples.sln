@@ -36,6 +36,8 @@ Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "ComputeCasting", "ComputeCa
 EndProject
 Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "ComputeCastingMaterialEvaluationShaderXML", "ComputeCastingMaterialEvaluationShaderXML\ComputeCastingMaterialEvaluationShaderXML.csproj", "{51D7B35E-AB66-451F-82BF-4E0926A439A7}"
 EndProject
+Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "ComputeCastingWithSceneDescription", "ComputeCastingWithSceneDescription\ComputeCastingWithSceneDescription.csproj", "{556BD124-D210-4084-905C-61DD97267C76}"
+EndProject
 Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "DisplacementCasting", "DisplacementCasting\DisplacementCasting.csproj", "{72391BD9-11CF-4435-94B2-E009CC731059}"
 EndProject
 Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "ErrorEvent", "ErrorEvent\ErrorEvent.csproj", "{6634CF9C-4C2D-47BC-8FBE-93129CEE5E83}"
@@ -220,6 +222,10 @@ Global
         {51D7B35E-AB66-451F-82BF-4E0926A439A7}.Debug|x64.Build.0 = Debug|x64
         {51D7B35E-AB66-451F-82BF-4E0926A439A7}.Release|x64.ActiveCfg = Release|x64
         {51D7B35E-AB66-451F-82BF-4E0926A439A7}.Release|x64.Build.0 = Release|x64
+        {556BD124-D210-4084-905C-61DD97267C76}.Debug|x64.ActiveCfg = Debug|x64
+        {556BD124-D210-4084-905C-61DD97267C76}.Debug|x64.Build.0 = Debug|x64
+        {556BD124-D210-4084-905C-61DD97267C76}.Release|x64.ActiveCfg = Release|x64
+        {556BD124-D210-4084-905C-61DD97267C76}.Release|x64.Build.0 = Release|x64
         {72391BD9-11CF-4435-94B2-E009CC731059}.Debug|x64.ActiveCfg = Debug|x64
         {72391BD9-11CF-4435-94B2-E009CC731059}.Debug|x64.Build.0 = Debug|x64
         {72391BD9-11CF-4435-94B2-E009CC731059}.Release|x64.ActiveCfg = Release|x64

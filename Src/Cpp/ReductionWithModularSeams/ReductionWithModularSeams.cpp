@@ -87,6 +87,12 @@ void CheckLog(Simplygon::ISimplygon* sg)
 	{
 		printf("%s\n", "No warnings.");
 	}
+	
+	// Error out if Simplygon has errors. 
+	if (hasErrors)
+	{
+		throw std::exception("Processing failed with an error");
+	}
 }
 
 Simplygon::spGeometryDataCollection ExtractGeometriesInScene(Simplygon::ISimplygon* sg, Simplygon::spScene sgModularAssetsScene)
