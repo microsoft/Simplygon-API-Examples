@@ -50,7 +50,7 @@ public class Program
             var errorCount = errors.GetItemCount();
             if (errorCount > 0)
             {
-                Console.WriteLine("Errors:");
+                Console.WriteLine("CheckLog: Errors:");
                 for (uint errorIndex = 0; errorIndex < errorCount; ++errorIndex)
                 {
                     string errorString = errors.GetItem((int)errorIndex);
@@ -61,7 +61,7 @@ public class Program
         }
         else
         {
-            Console.WriteLine("No errors.");
+            Console.WriteLine("CheckLog: No errors.");
         }
         
         // Check if any warnings occurred. 
@@ -73,7 +73,7 @@ public class Program
             var warningCount = warnings.GetItemCount();
             if (warningCount > 0)
             {
-                Console.WriteLine("Warnings:");
+                Console.WriteLine("CheckLog: Warnings:");
                 for (uint warningIndex = 0; warningIndex < warningCount; ++warningIndex)
                 {
                     string warningString = warnings.GetItem((int)warningIndex);
@@ -84,7 +84,13 @@ public class Program
         }
         else
         {
-            Console.WriteLine("No warnings.");
+            Console.WriteLine("CheckLog: No warnings.");
+        }
+        
+        // Error out if Simplygon has errors. 
+        if (hasErrors)
+        {
+            throw new System.Exception("Processing failed with an error");
         }
         
         // Error out if Simplygon has errors. 
@@ -116,7 +122,9 @@ public class Program
         // remeshed object has a new UV set.  
         sgScene.GetTextureTable().Clear();
         sgScene.GetMaterialTable().Clear();
-        sgScene.GetMaterialTable().AddMaterial( sg.CreateMaterial() );
+        var defaultMaterial = sg.CreateMaterial();
+        defaultMaterial.SetName("defaultMaterial");
+        sgScene.GetMaterialTable().AddMaterial( defaultMaterial );
         
         // Save processed scene.         
         Console.WriteLine("Save processed scene.");

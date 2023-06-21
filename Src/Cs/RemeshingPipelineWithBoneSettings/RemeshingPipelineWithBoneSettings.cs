@@ -50,7 +50,7 @@ public class Program
             var errorCount = errors.GetItemCount();
             if (errorCount > 0)
             {
-                Console.WriteLine("Errors:");
+                Console.WriteLine("CheckLog: Errors:");
                 for (uint errorIndex = 0; errorIndex < errorCount; ++errorIndex)
                 {
                     string errorString = errors.GetItem((int)errorIndex);
@@ -61,7 +61,7 @@ public class Program
         }
         else
         {
-            Console.WriteLine("No errors.");
+            Console.WriteLine("CheckLog: No errors.");
         }
         
         // Check if any warnings occurred. 
@@ -73,7 +73,7 @@ public class Program
             var warningCount = warnings.GetItemCount();
             if (warningCount > 0)
             {
-                Console.WriteLine("Warnings:");
+                Console.WriteLine("CheckLog: Warnings:");
                 for (uint warningIndex = 0; warningIndex < warningCount; ++warningIndex)
                 {
                     string warningString = warnings.GetItem((int)warningIndex);
@@ -84,7 +84,13 @@ public class Program
         }
         else
         {
-            Console.WriteLine("No warnings.");
+            Console.WriteLine("CheckLog: No warnings.");
+        }
+        
+        // Error out if Simplygon has errors. 
+        if (hasErrors)
+        {
+            throw new System.Exception("Processing failed with an error");
         }
         
         // Error out if Simplygon has errors. 
@@ -103,10 +109,16 @@ public class Program
         // Create the remeshing pipeline. 
         using Simplygon.spRemeshingPipeline sgRemeshingPipeline = sg.CreateRemeshingPipeline();
         using Simplygon.spRemeshingSettings sgRemeshingSettings = sgRemeshingPipeline.GetRemeshingSettings();
+        using Simplygon.spMappingImageSettings sgMappingImageSettings = sgRemeshingPipeline.GetMappingImageSettings();
         using Simplygon.spBoneSettings sgBoneSettings = sgRemeshingPipeline.GetBoneSettings();
         
         // Set on-screen size target for remeshing. 
         sgRemeshingSettings.SetOnScreenSize( 300 );
+        
+        // Generate a mapping image, which is needed to transfer skinning. 
+        sgMappingImageSettings.SetGenerateMappingImage( true );
+        sgMappingImageSettings.SetGenerateTexCoords( true );
+        sgMappingImageSettings.SetGenerateTangents( true );
         
         // Enable bone reducer. 
         sgBoneSettings.SetUseBoneReducer( true );
@@ -131,7 +143,9 @@ public class Program
         
         // Since we are not casting any materials in this example, add a default material to silence 
         // validation warnings in the exporter. 
-        sgScene.GetMaterialTable().AddMaterial( sg.CreateMaterial() );
+        var defaultMaterial = sg.CreateMaterial();
+        defaultMaterial.SetName("defaultMaterial");
+        sgScene.GetMaterialTable().AddMaterial( defaultMaterial );
         
         // Save processed scene.         
         Console.WriteLine("Save processed scene.");
