@@ -51,7 +51,7 @@ void CheckLog(Simplygon::ISimplygon* sg)
 		auto errorCount = errors->GetItemCount();
 		if (errorCount > 0)
 		{
-			printf("%s\n", "Errors:");
+			printf("%s\n", "CheckLog: Errors:");
 			for (auto errorIndex = 0U; errorIndex < errorCount; ++errorIndex)
 			{
 				Simplygon::spString errorString = errors->GetItem((int)errorIndex);
@@ -62,7 +62,7 @@ void CheckLog(Simplygon::ISimplygon* sg)
 	}
 	else
 	{
-		printf("%s\n", "No errors.");
+		printf("%s\n", "CheckLog: No errors.");
 	}
 	
 	// Check if any warnings occurred. 
@@ -74,7 +74,7 @@ void CheckLog(Simplygon::ISimplygon* sg)
 		auto warningCount = warnings->GetItemCount();
 		if (warningCount > 0)
 		{
-			printf("%s\n", "Warnings:");
+			printf("%s\n", "CheckLog: Warnings:");
 			for (auto warningIndex = 0U; warningIndex < warningCount; ++warningIndex)
 			{
 				Simplygon::spString warningString = warnings->GetItem((int)warningIndex);
@@ -85,7 +85,7 @@ void CheckLog(Simplygon::ISimplygon* sg)
 	}
 	else
 	{
-		printf("%s\n", "No warnings.");
+		printf("%s\n", "CheckLog: No warnings.");
 	}
 	
 	// Error out if Simplygon has errors. 
@@ -147,6 +147,7 @@ void OpacityCasting(Simplygon::ISimplygon* sg)
 	Simplygon::spMaterialTable sgMaterialTable = sg->CreateMaterialTable();
 	Simplygon::spTextureTable sgTextureTable = sg->CreateTextureTable();
 	Simplygon::spMaterial sgMaterial = sg->CreateMaterial();
+	sgMaterial->SetName("OutputMaterial");
 	Simplygon::spTexture sgOpacityTexture = sg->CreateTexture();
 	sgOpacityTexture->SetName( "Opacity" );
 	sgOpacityTexture->SetFilePath( opacityTextureFilePath.c_str() );

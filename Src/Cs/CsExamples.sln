@@ -132,6 +132,8 @@ Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "RemeshingPipelineWithProces
 EndProject
 Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "RemeshingWithBoneSettings", "RemeshingWithBoneSettings\RemeshingWithBoneSettings.csproj", "{72FB479B-1749-497F-9B39-3C8380750ED4}"
 EndProject
+Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "RemeshingWithDisplacementTessellation", "RemeshingWithDisplacementTessellation\RemeshingWithDisplacementTessellation.csproj", "{86F1EFD1-688E-478D-8E58-6071DFF399B4}"
+EndProject
 Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "RemeshingWithHoleFilling", "RemeshingWithHoleFilling\RemeshingWithHoleFilling.csproj", "{82E6E310-6461-40AD-9C24-62CE4B80FB18}"
 EndProject
 Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "RemeshingWithMaterialCasting", "RemeshingWithMaterialCasting\RemeshingWithMaterialCasting.csproj", "{A82A0ED7-24AB-48AF-9962-9BD67B82E417}"
@@ -414,6 +416,10 @@ Global
         {72FB479B-1749-497F-9B39-3C8380750ED4}.Debug|x64.Build.0 = Debug|x64
         {72FB479B-1749-497F-9B39-3C8380750ED4}.Release|x64.ActiveCfg = Release|x64
         {72FB479B-1749-497F-9B39-3C8380750ED4}.Release|x64.Build.0 = Release|x64
+        {86F1EFD1-688E-478D-8E58-6071DFF399B4}.Debug|x64.ActiveCfg = Debug|x64
+        {86F1EFD1-688E-478D-8E58-6071DFF399B4}.Debug|x64.Build.0 = Debug|x64
+        {86F1EFD1-688E-478D-8E58-6071DFF399B4}.Release|x64.ActiveCfg = Release|x64
+        {86F1EFD1-688E-478D-8E58-6071DFF399B4}.Release|x64.Build.0 = Release|x64
         {82E6E310-6461-40AD-9C24-62CE4B80FB18}.Debug|x64.ActiveCfg = Debug|x64
         {82E6E310-6461-40AD-9C24-62CE4B80FB18}.Debug|x64.Build.0 = Debug|x64
         {82E6E310-6461-40AD-9C24-62CE4B80FB18}.Release|x64.ActiveCfg = Release|x64

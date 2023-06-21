@@ -45,13 +45,13 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetErrorMessages(errors)
         errorCount = errors.GetItemCount()
         if errorCount > 0:
-            print('Errors:')
+            print('CheckLog: Errors:')
             for errorIndex in range(errorCount):
                 errorString = errors.GetItem(errorIndex)
                 print(errorString)
             sg.ClearErrorMessages()
     else:
-        print('No errors.')
+        print('CheckLog: No errors.')
     
     # Check if any warnings occurred. 
     hasWarnings = sg.WarningOccurred()
@@ -60,13 +60,13 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetWarningMessages(warnings)
         warningCount = warnings.GetItemCount()
         if warningCount > 0:
-            print('Warnings:')
+            print('CheckLog: Warnings:')
             for warningIndex in range(warningCount):
                 warningString = warnings.GetItem(warningIndex)
                 print(warningString)
             sg.ClearWarningMessages()
     else:
-        print('No warnings.')
+        print('CheckLog: No warnings.')
     
     # Error out if Simplygon has errors. 
     if hasErrors:
@@ -80,10 +80,16 @@ def RunRemeshing(sg: Simplygon.ISimplygon):
     # Create the remeshing pipeline. 
     sgRemeshingPipeline = sg.CreateRemeshingPipeline()
     sgRemeshingSettings = sgRemeshingPipeline.GetRemeshingSettings()
+    sgMappingImageSettings = sgRemeshingPipeline.GetMappingImageSettings()
     sgBoneSettings = sgRemeshingPipeline.GetBoneSettings()
     
     # Set on-screen size target for remeshing. 
     sgRemeshingSettings.SetOnScreenSize( 300 )
+    
+    # Generate a mapping image, which is needed to transfer skinning. 
+    sgMappingImageSettings.SetGenerateMappingImage( True )
+    sgMappingImageSettings.SetGenerateTexCoords( True )
+    sgMappingImageSettings.SetGenerateTangents( True )
     
     # Enable bone reducer. 
     sgBoneSettings.SetUseBoneReducer( True )
@@ -108,7 +114,9 @@ def RunRemeshing(sg: Simplygon.ISimplygon):
     
     # Since we are not casting any materials in this example, add a default material to silence 
     # validation warnings in the exporter. 
-    sgScene.GetMaterialTable().AddMaterial( sg.CreateMaterial() )
+    defaultMaterial = sg.CreateMaterial()
+    defaultMaterial.SetName("defaultMaterial")
+    sgScene.GetMaterialTable().AddMaterial( defaultMaterial )
     
     # Save processed scene.     
     print("Save processed scene.")
