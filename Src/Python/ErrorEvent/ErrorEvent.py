@@ -26,13 +26,13 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetErrorMessages(errors)
         errorCount = errors.GetItemCount()
         if errorCount > 0:
-            print("Errors:")
+            print('Errors:')
             for errorIndex in range(errorCount):
                 errorString = errors.GetItem(errorIndex)
                 print(errorString)
             sg.ClearErrorMessages()
     else:
-        print("No errors.")
+        print('No errors.')
     
     # Check if any warnings occurred. 
     hasWarnings = sg.WarningOccurred()
@@ -41,13 +41,13 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetWarningMessages(warnings)
         warningCount = warnings.GetItemCount()
         if warningCount > 0:
-            print("Warnings:")
+            print('Warnings:')
             for warningIndex in range(warningCount):
                 warningString = warnings.GetItem(warningIndex)
                 print(warningString)
             sg.ClearWarningMessages()
     else:
-        print("No warnings.")
+        print('No warnings.')
 
 def RunReduction(sg: Simplygon.ISimplygon):
     # Set the custom error handler to the Simplygon interface. 
@@ -64,19 +64,19 @@ def RunReduction(sg: Simplygon.ISimplygon):
     
     # Start the reduction pipeline and the faulty settings will cause an error.     
     print("Start the reduction pipeline and the faulty settings will cause an error.")
-    sgReductionPipeline.RunSceneFromFile("../../../Assets/SimplygonMan/SimplygonMan.obj", "output.fbx", Simplygon.EPipelineRunMode_RunInNewProcess)
+    sgReductionPipeline.RunSceneFromFile('../../../Assets/SimplygonMan/SimplygonMan.obj', 'output.fbx', Simplygon.EPipelineRunMode_RunInNewProcess)
     
     # Check log for any warnings or errors.     
     print("Check log for any warnings or errors.")
     CheckLog(sg)
 
 if __name__ == '__main__':
-    sg = simplygon_loader.init_simplygon()
-    if sg is None:
-        exit(Simplygon.GetLastInitializationError())
+        sg = simplygon_loader.init_simplygon()
+        if sg is None:
+            exit(Simplygon.GetLastInitializationError())
 
-    RunReduction(sg)
+        RunReduction(sg)
 
-    sg = None
-    gc.collect()
+        sg = None
+        gc.collect()
 

@@ -157,7 +157,7 @@ void RunBillboardCloudFoliage(Simplygon::ISimplygon* sg)
 	sgDiffuseCasterSettings->SetFillMode( Simplygon::EAtlasFillMode::Interpolate );
 
 	sgDiffuseCaster->RunProcessing();
-	std::string diffuseTextureFilePath = sgDiffuseCaster->GetOutputFilePath();
+	std::string diffuseTextureFilePath = sgDiffuseCaster->GetOutputFilePath().c_str();
 	
 	// Setup and run the specular material casting. 	
 	printf("%s\n", "Setup and run the specular material casting.");
@@ -176,7 +176,7 @@ void RunBillboardCloudFoliage(Simplygon::ISimplygon* sg)
 	sgSpecularCasterSettings->SetFillMode( Simplygon::EAtlasFillMode::Interpolate );
 
 	sgSpecularCaster->RunProcessing();
-	std::string specularTextureFilePath = sgSpecularCaster->GetOutputFilePath();
+	std::string specularTextureFilePath = sgSpecularCaster->GetOutputFilePath().c_str();
 	
 	// Setup and run the normals material casting. 	
 	printf("%s\n", "Setup and run the normals material casting.");
@@ -197,7 +197,7 @@ void RunBillboardCloudFoliage(Simplygon::ISimplygon* sg)
 	sgNormalsCasterSettings->SetFillMode( Simplygon::EAtlasFillMode::Interpolate );
 
 	sgNormalsCaster->RunProcessing();
-	std::string normalsTextureFilePath = sgNormalsCaster->GetOutputFilePath();
+	std::string normalsTextureFilePath = sgNormalsCaster->GetOutputFilePath().c_str();
 	
 	// Setup and run the opacity material casting. Make sure there is no dilation or fill. 	
 	printf("%s\n", "Setup and run the opacity material casting. Make sure there is no dilation or fill.");
@@ -217,7 +217,7 @@ void RunBillboardCloudFoliage(Simplygon::ISimplygon* sg)
 	sgOpacityCasterSettings->SetOutputPixelFormat( Simplygon::EPixelFormat::R8 );
 
 	sgOpacityCaster->RunProcessing();
-	std::string opacityTextureFilePath = sgOpacityCaster->GetOutputFilePath();
+	std::string opacityTextureFilePath = sgOpacityCaster->GetOutputFilePath().c_str();
 	
 	// Update scene with new casted textures. 
 	Simplygon::spMaterialTable sgMaterialTable = sgScene->GetMaterialTable();

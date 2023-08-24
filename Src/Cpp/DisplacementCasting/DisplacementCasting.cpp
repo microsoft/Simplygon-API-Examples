@@ -136,7 +136,7 @@ void DisplacementCasting(Simplygon::ISimplygon* sg)
 	sgDisplacementCasterSettings->SetOutputPixelFormat( Simplygon::EPixelFormat::R8G8B8 );
 
 	sgDisplacementCaster->RunProcessing();
-	std::string displacementTextureFilePath = sgDisplacementCaster->GetOutputFilePath();
+	std::string displacementTextureFilePath = sgDisplacementCaster->GetOutputFilePath().c_str();
 	
 	// Update scene with new casted texture. 
 	Simplygon::spMaterialTable sgMaterialTable = sg->CreateMaterialTable();

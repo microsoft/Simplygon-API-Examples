@@ -55,6 +55,7 @@ public class Program
             Console.WriteLine("No warnings.");
         }
     }
+
     static void RunReduction(Simplygon.ISimplygon sg, string inputFile, string outputFile)
     {
         // Create the reduction pipeline. 
@@ -73,6 +74,7 @@ public class Program
         Console.WriteLine("Check log for any warnings or errors.");
         CheckLog(sg);
     }
+
     static int Main(string[] args)
     {
         using var sg = Simplygon.Loader.InitSimplygon(out var errorCode, out var errorMessage);
@@ -84,10 +86,11 @@ public class Program
         var inputFiles = Directory.EnumerateFiles("../../../Assets/", "*.glb", SearchOption.AllDirectories);
         foreach (string inputFile in inputFiles)
         {
-            string outputFile = Path.Combine(Path.GetFileNameWithoutExtension(inputFile) + "_LOD" + Path.GetExtension(inputFile));
+            string outputFile = Path.Combine("output", $"Batching_{Path.GetFileNameWithoutExtension(inputFile)}_LOD{Path.GetExtension(inputFile)}");
             RunReduction(sg, inputFile, outputFile);
         }
 
         return 0;
     }
+
 }

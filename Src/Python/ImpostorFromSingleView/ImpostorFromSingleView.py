@@ -25,7 +25,7 @@ def LoadScene(sg: Simplygon.ISimplygon, path: str):
     sgScene = sgSceneImporter.GetScene()
     return sgScene
 
-def SaveScene(sg: Simplygon.ISimplygon, sgScene:Simplygon.spScene, path: str):
+def SaveScene(sg: Simplygon.ISimplygon, sgScene: Simplygon.spScene, path: str):
     # Create scene exporter. 
     sgSceneExporter = sg.CreateSceneExporter()
     sgSceneExporter.SetExportFilePath(path)
@@ -44,13 +44,13 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetErrorMessages(errors)
         errorCount = errors.GetItemCount()
         if errorCount > 0:
-            print("Errors:")
+            print('Errors:')
             for errorIndex in range(errorCount):
                 errorString = errors.GetItem(errorIndex)
                 print(errorString)
             sg.ClearErrorMessages()
     else:
-        print("No errors.")
+        print('No errors.')
     
     # Check if any warnings occurred. 
     hasWarnings = sg.WarningOccurred()
@@ -59,18 +59,18 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetWarningMessages(warnings)
         warningCount = warnings.GetItemCount()
         if warningCount > 0:
-            print("Warnings:")
+            print('Warnings:')
             for warningIndex in range(warningCount):
                 warningString = warnings.GetItem(warningIndex)
                 print(warningString)
             sg.ClearWarningMessages()
     else:
-        print("No warnings.")
+        print('No warnings.')
 
 def RunImpostorFromSingleView(sg: Simplygon.ISimplygon):
     # Load scene to process.     
     print("Load scene to process.")
-    sgScene = LoadScene(sg, "../../../Assets/Bush/Bush.fbx")
+    sgScene = LoadScene(sg, '../../../Assets/Bush/Bush.fbx')
     
     # For all materials in the scene set the blend mode to blend (instead of opaque) 
     materialCount = sgScene.GetMaterialTable().GetMaterialsCount()
@@ -126,7 +126,7 @@ def RunImpostorFromSingleView(sg: Simplygon.ISimplygon):
 
     sgDiffuseCasterSettings = sgDiffuseCaster.GetColorCasterSettings()
     sgDiffuseCasterSettings.SetMaterialChannel( 'Diffuse' )
-    sgDiffuseCasterSettings.SetOpacityChannel( "Opacity" )
+    sgDiffuseCasterSettings.SetOpacityChannel( 'Opacity' )
     sgDiffuseCasterSettings.SetOpacityChannelComponent( Simplygon.EColorComponent_Alpha )
     sgDiffuseCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
     sgDiffuseCasterSettings.SetBakeOpacityInAlpha( False )
@@ -147,7 +147,7 @@ def RunImpostorFromSingleView(sg: Simplygon.ISimplygon):
 
     sgSpecularCasterSettings = sgSpecularCaster.GetColorCasterSettings()
     sgSpecularCasterSettings.SetMaterialChannel( 'Specular' )
-    sgSpecularCasterSettings.SetOpacityChannel( "Opacity" )
+    sgSpecularCasterSettings.SetOpacityChannel( 'Opacity' )
     sgSpecularCasterSettings.SetOpacityChannelComponent( Simplygon.EColorComponent_Alpha )
     sgSpecularCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
     sgSpecularCasterSettings.SetDilation( 10 )
@@ -166,7 +166,7 @@ def RunImpostorFromSingleView(sg: Simplygon.ISimplygon):
 
     sgNormalsCasterSettings = sgNormalsCaster.GetNormalCasterSettings()
     sgNormalsCasterSettings.SetMaterialChannel( 'Normals' )
-    sgNormalsCasterSettings.SetOpacityChannel( "Opacity" )
+    sgNormalsCasterSettings.SetOpacityChannel( 'Opacity' )
     sgNormalsCasterSettings.SetOpacityChannelComponent( Simplygon.EColorComponent_Alpha )
     sgNormalsCasterSettings.SetGenerateTangentSpaceNormals( True )
     sgNormalsCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
@@ -186,7 +186,7 @@ def RunImpostorFromSingleView(sg: Simplygon.ISimplygon):
 
     sgOpacityCasterSettings = sgOpacityCaster.GetOpacityCasterSettings()
     sgOpacityCasterSettings.SetMaterialChannel( 'Opacity' )
-    sgOpacityCasterSettings.SetOpacityChannel( "Opacity" )
+    sgOpacityCasterSettings.SetOpacityChannel( 'Opacity' )
     sgOpacityCasterSettings.SetOpacityChannelComponent( Simplygon.EColorComponent_Alpha )
     sgOpacityCasterSettings.SetOutputImageFileFormat( Simplygon.EImageOutputFormat_PNG )
     sgOpacityCasterSettings.SetDilation( 0 )
@@ -260,19 +260,19 @@ def RunImpostorFromSingleView(sg: Simplygon.ISimplygon):
     
     # Save processed scene.     
     print("Save processed scene.")
-    SaveScene(sg, sgImpostorScene, "Output.glb")
+    SaveScene(sg, sgImpostorScene, 'Output.glb')
     
     # Check log for any warnings or errors.     
     print("Check log for any warnings or errors.")
     CheckLog(sg)
 
 if __name__ == '__main__':
-    sg = simplygon_loader.init_simplygon()
-    if sg is None:
-        exit(Simplygon.GetLastInitializationError())
+        sg = simplygon_loader.init_simplygon()
+        if sg is None:
+            exit(Simplygon.GetLastInitializationError())
 
-    RunImpostorFromSingleView(sg)
+        RunImpostorFromSingleView(sg)
 
-    sg = None
-    gc.collect()
+        sg = None
+        gc.collect()
 

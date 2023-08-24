@@ -133,7 +133,7 @@ void AmbientOcclusionCasting(Simplygon::ISimplygon* sg)
 	sgAmbientOcclusionCasterSettings->SetOutputImageFileFormat( Simplygon::EImageOutputFormat::PNG );
 
 	sgAmbientOcclusionCaster->RunProcessing();
-	std::string ambientocclusionTextureFilePath = sgAmbientOcclusionCaster->GetOutputFilePath();
+	std::string ambientocclusionTextureFilePath = sgAmbientOcclusionCaster->GetOutputFilePath().c_str();
 	
 	// Update scene with new casted texture. 
 	Simplygon::spMaterialTable sgMaterialTable = sg->CreateMaterialTable();

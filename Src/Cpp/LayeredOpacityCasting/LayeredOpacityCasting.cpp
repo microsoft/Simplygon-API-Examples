@@ -134,7 +134,7 @@ void RunOpacityCasting(Simplygon::ISimplygon* sg)
 	sgDiffuseCasterSettings->SetOutputImageFileFormat( Simplygon::EImageOutputFormat::PNG );
 
 	sgDiffuseCaster->RunProcessing();
-	std::string diffuseTextureFilePath = sgDiffuseCaster->GetOutputFilePath();
+	std::string diffuseTextureFilePath = sgDiffuseCaster->GetOutputFilePath().c_str();
 	
 	// Update scene with new casted textures. 
 	Simplygon::spMaterialTable sgMaterialTable = sg->CreateMaterialTable();

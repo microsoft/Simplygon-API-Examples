@@ -65,6 +65,7 @@ public class Program
             Console.WriteLine("No warnings.");
         }
     }
+
     static void RunReduction(Simplygon.ISimplygon sg)
     {
         // Set the custom error handler to the Simplygon interface. 
@@ -87,6 +88,7 @@ public class Program
         Console.WriteLine("Check log for any warnings or errors.");
         CheckLog(sg);
     }
+
     static int Main(string[] args)
     {
         using var sg = Simplygon.Loader.InitSimplygon(out var errorCode, out var errorMessage);
@@ -100,4 +102,5 @@ public class Program
 
         return 0;
     }
+
 }

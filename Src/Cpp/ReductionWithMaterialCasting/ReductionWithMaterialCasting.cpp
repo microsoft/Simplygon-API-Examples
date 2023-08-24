@@ -140,7 +140,7 @@ void RunReductionWithMaterialCasting(Simplygon::ISimplygon* sg)
 	sgDiffuseCasterSettings->SetOutputImageFileFormat( Simplygon::EImageOutputFormat::PNG );
 
 	sgDiffuseCaster->RunProcessing();
-	std::string diffuseTextureFilePath = sgDiffuseCaster->GetOutputFilePath();
+	std::string diffuseTextureFilePath = sgDiffuseCaster->GetOutputFilePath().c_str();
 	
 	// Setup and run the normals material casting. 	
 	printf("%s\n", "Setup and run the normals material casting.");
@@ -156,7 +156,7 @@ void RunReductionWithMaterialCasting(Simplygon::ISimplygon* sg)
 	sgNormalsCasterSettings->SetOutputImageFileFormat( Simplygon::EImageOutputFormat::PNG );
 
 	sgNormalsCaster->RunProcessing();
-	std::string normalsTextureFilePath = sgNormalsCaster->GetOutputFilePath();
+	std::string normalsTextureFilePath = sgNormalsCaster->GetOutputFilePath().c_str();
 	
 	// Update scene with new casted textures. 
 	Simplygon::spMaterialTable sgMaterialTable = sg->CreateMaterialTable();

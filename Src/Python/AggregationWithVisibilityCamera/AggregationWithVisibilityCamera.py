@@ -25,7 +25,7 @@ def LoadScene(sg: Simplygon.ISimplygon, path: str):
     sgScene = sgSceneImporter.GetScene()
     return sgScene
 
-def SaveScene(sg: Simplygon.ISimplygon, sgScene:Simplygon.spScene, path: str):
+def SaveScene(sg: Simplygon.ISimplygon, sgScene: Simplygon.spScene, path: str):
     # Create scene exporter. 
     sgSceneExporter = sg.CreateSceneExporter()
     sgSceneExporter.SetExportFilePath(path)
@@ -44,13 +44,13 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetErrorMessages(errors)
         errorCount = errors.GetItemCount()
         if errorCount > 0:
-            print("Errors:")
+            print('Errors:')
             for errorIndex in range(errorCount):
                 errorString = errors.GetItem(errorIndex)
                 print(errorString)
             sg.ClearErrorMessages()
     else:
-        print("No errors.")
+        print('No errors.')
     
     # Check if any warnings occurred. 
     hasWarnings = sg.WarningOccurred()
@@ -59,18 +59,18 @@ def CheckLog(sg: Simplygon.ISimplygon):
         sg.GetWarningMessages(warnings)
         warningCount = warnings.GetItemCount()
         if warningCount > 0:
-            print("Warnings:")
+            print('Warnings:')
             for warningIndex in range(warningCount):
                 warningString = warnings.GetItem(warningIndex)
                 print(warningString)
             sg.ClearWarningMessages()
     else:
-        print("No warnings.")
+        print('No warnings.')
 
 def RunAggregation(sg: Simplygon.ISimplygon):
     # Load scene to process.     
     print("Load scene to process.")
-    sgScene = LoadScene(sg, "../../../Assets/ObscuredTeapot/Teapot.obj")
+    sgScene = LoadScene(sg, '../../../Assets/ObscuredTeapot/Teapot.obj')
     
     # Create the aggregation processor. 
     sgAggregationProcessor = sg.CreateAggregationProcessor()
@@ -92,7 +92,7 @@ def RunAggregation(sg: Simplygon.ISimplygon):
     sgSceneSelectionSetTable.AddSelectionSet(sgCameraSelectionSet)
     
     # Use the camera previously added. 
-    sgVisibilitySettings.SetCameraSelectionSetName( "Camera" )
+    sgVisibilitySettings.SetCameraSelectionSetName( 'Camera' )
     
     # Enabled GPU based visibility calculations. 
     sgVisibilitySettings.SetComputeVisibilityMode( Simplygon.EComputeVisibilityMode_DirectX )
@@ -121,19 +121,19 @@ def RunAggregation(sg: Simplygon.ISimplygon):
     
     # Save processed scene.     
     print("Save processed scene.")
-    SaveScene(sg, sgScene, "Output.fbx")
+    SaveScene(sg, sgScene, 'Output.fbx')
     
     # Check log for any warnings or errors.     
     print("Check log for any warnings or errors.")
     CheckLog(sg)
 
 if __name__ == '__main__':
-    sg = simplygon_loader.init_simplygon()
-    if sg is None:
-        exit(Simplygon.GetLastInitializationError())
+        sg = simplygon_loader.init_simplygon()
+        if sg is None:
+            exit(Simplygon.GetLastInitializationError())
 
-    RunAggregation(sg)
+        RunAggregation(sg)
 
-    sg = None
-    gc.collect()
+        sg = None
+        gc.collect()
 
