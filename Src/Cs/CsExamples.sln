@@ -128,6 +128,8 @@ Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "RemeshingPipelineWithHoleFi
 EndProject
 Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "RemeshingPipelineWithMaterialCasting", "RemeshingPipelineWithMaterialCasting\RemeshingPipelineWithMaterialCasting.csproj", "{AAC9179A-C29C-4204-BF7F-C88FBCF85B7C}"
 EndProject
+Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "RemeshingPipelineWithMaxDeviation", "RemeshingPipelineWithMaxDeviation\RemeshingPipelineWithMaxDeviation.csproj", "{6AF9B39C-D290-495A-941F-6FEC5C8517A7}"
+EndProject
 Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "RemeshingPipelineWithProcessSelectionSet", "RemeshingPipelineWithProcessSelectionSet\RemeshingPipelineWithProcessSelectionSet.csproj", "{8A6BC475-8B5F-4AF1-A3E1-237B87A68E0D}"
 EndProject
 Project("{31ED6E3B-F5F5-4966-BC3D-F4F464B71BA3}") = "RemeshingWithBoneSettings", "RemeshingWithBoneSettings\RemeshingWithBoneSettings.csproj", "{72FB479B-1749-497F-9B39-3C8380750ED4}"
@@ -408,6 +410,10 @@ Global
         {AAC9179A-C29C-4204-BF7F-C88FBCF85B7C}.Debug|x64.Build.0 = Debug|x64
         {AAC9179A-C29C-4204-BF7F-C88FBCF85B7C}.Release|x64.ActiveCfg = Release|x64
         {AAC9179A-C29C-4204-BF7F-C88FBCF85B7C}.Release|x64.Build.0 = Release|x64
+        {6AF9B39C-D290-495A-941F-6FEC5C8517A7}.Debug|x64.ActiveCfg = Debug|x64
+        {6AF9B39C-D290-495A-941F-6FEC5C8517A7}.Debug|x64.Build.0 = Debug|x64
+        {6AF9B39C-D290-495A-941F-6FEC5C8517A7}.Release|x64.ActiveCfg = Release|x64
+        {6AF9B39C-D290-495A-941F-6FEC5C8517A7}.Release|x64.Build.0 = Release|x64
         {8A6BC475-8B5F-4AF1-A3E1-237B87A68E0D}.Debug|x64.ActiveCfg = Debug|x64
         {8A6BC475-8B5F-4AF1-A3E1-237B87A68E0D}.Debug|x64.Build.0 = Debug|x64
         {8A6BC475-8B5F-4AF1-A3E1-237B87A68E0D}.Release|x64.ActiveCfg = Release|x64
