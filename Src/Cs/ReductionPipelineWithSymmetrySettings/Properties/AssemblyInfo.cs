@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("ReductionPipelineWithSymmetrySettings")]
-[assembly: AssemblyCopyright("Copyright © Microsoft Corporation 2023")]
+[assembly: AssemblyCopyright("Copyright © Microsoft Corporation 2024")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 

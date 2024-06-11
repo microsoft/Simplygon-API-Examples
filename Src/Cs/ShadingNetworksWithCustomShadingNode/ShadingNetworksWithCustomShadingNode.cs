@@ -127,12 +127,6 @@ public class Program
         {
             throw new System.Exception("Processing failed with an error");
         }
-        
-        // Error out if Simplygon has errors. 
-        if (hasErrors)
-        {
-            throw new System.Exception("Processing failed with an error");
-        }
     }
 
     static void RunReductionWithShadingNetworks(Simplygon.ISimplygon sg)
