@@ -7,7 +7,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Remeshing")]
-[assembly: AssemblyCopyright("Copyright © Microsoft Corporation 2024")]
+[assembly: AssemblyCopyright("Copyright © Microsoft Corporation 2025")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
