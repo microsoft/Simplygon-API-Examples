@@ -98,6 +98,8 @@ Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "ReductionPipelineWithVisibi
 EndProject
 Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "ReductionWithBoneSettings", "ReductionWithBoneSettings\ReductionWithBoneSettings.vcxproj", "{D4A2AD0A-3E69-4399-B746-F882DA9A5559}"
 EndProject
+Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "ReductionWithGeomorph", "ReductionWithGeomorph\ReductionWithGeomorph.vcxproj", "{DA68D409-F4FB-4DEA-A7B8-A164B278E6D0}"
+EndProject
 Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "ReductionWithImportanceSettings", "ReductionWithImportanceSettings\ReductionWithImportanceSettings.vcxproj", "{1419C691-C31E-452C-872E-77AEAEB5B50D}"
 EndProject
 Project("{E9F586C4-8A06-46E3-9F4C-A5E5A63F6751}") = "ReductionWithMaterialCasting", "ReductionWithMaterialCasting\ReductionWithMaterialCasting.vcxproj", "{266E1CDE-E9B0-44A4-9FCB-C887DA91DE16}"
@@ -350,6 +352,10 @@ Global
         {D4A2AD0A-3E69-4399-B746-F882DA9A5559}.Debug|x64.Build.0 = Debug|x64
         {D4A2AD0A-3E69-4399-B746-F882DA9A5559}.Release|x64.ActiveCfg = Release|x64
         {D4A2AD0A-3E69-4399-B746-F882DA9A5559}.Release|x64.Build.0 = Release|x64
+        {DA68D409-F4FB-4DEA-A7B8-A164B278E6D0}.Debug|x64.ActiveCfg = Debug|x64
+        {DA68D409-F4FB-4DEA-A7B8-A164B278E6D0}.Debug|x64.Build.0 = Debug|x64
+        {DA68D409-F4FB-4DEA-A7B8-A164B278E6D0}.Release|x64.ActiveCfg = Release|x64
+        {DA68D409-F4FB-4DEA-A7B8-A164B278E6D0}.Release|x64.Build.0 = Release|x64
         {1419C691-C31E-452C-872E-77AEAEB5B50D}.Debug|x64.ActiveCfg = Debug|x64
         {1419C691-C31E-452C-872E-77AEAEB5B50D}.Debug|x64.Build.0 = Debug|x64
         {1419C691-C31E-452C-872E-77AEAEB5B50D}.Release|x64.ActiveCfg = Release|x64

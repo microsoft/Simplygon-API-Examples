@@ -104,9 +104,17 @@ public class Program
         using Simplygon.spHighDensityMeshReductionPipeline sgHighDensityMeshReductionPipeline = sg.CreateHighDensityMeshReductionPipeline();
         using Simplygon.spHighDensityMeshReductionSettings sgHighDensityMeshReductionSettings = sgHighDensityMeshReductionPipeline.GetHighDensityMeshReductionSettings();
         
-        // Set the on screen size. 
-        sgHighDensityMeshReductionSettings.SetOnScreenSizeEnabled( true );
-        sgHighDensityMeshReductionSettings.SetOnScreenSize( 300 );
+        // Set reduction target to triangle ratio with a ratio of 50%. 
+        sgHighDensityMeshReductionSettings.SetStopCondition( Simplygon.EStopCondition.All );
+        sgHighDensityMeshReductionSettings.SetOnScreenSizeEnabled( false );
+        sgHighDensityMeshReductionSettings.SetMaxDeviationEnabled( false );
+        sgHighDensityMeshReductionSettings.SetTriangleCountEnabled( false );
+        sgHighDensityMeshReductionSettings.SetTriangleRatioEnabled( true );
+        sgHighDensityMeshReductionSettings.SetTriangleRatio( 0.5f );
+        
+        // Set Isotropicity (a value that goes from 0 to 1). A high value creates a more isotropic output 
+        // with more equilateral triangles, at the cost of reduced physical resemblance to the original. 
+        sgHighDensityMeshReductionSettings.SetIsotropicity( 0.2f );
         
         // Start the reduction pipeline.         
         Console.WriteLine("Start the reduction pipeline.");

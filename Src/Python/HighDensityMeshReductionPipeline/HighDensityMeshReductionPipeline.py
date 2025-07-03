@@ -81,9 +81,17 @@ def RunReduction(sg: Simplygon.ISimplygon):
     sgHighDensityMeshReductionPipeline = sg.CreateHighDensityMeshReductionPipeline()
     sgHighDensityMeshReductionSettings = sgHighDensityMeshReductionPipeline.GetHighDensityMeshReductionSettings()
     
-    # Set the on screen size. 
-    sgHighDensityMeshReductionSettings.SetOnScreenSizeEnabled( True )
-    sgHighDensityMeshReductionSettings.SetOnScreenSize( 300 )
+    # Set reduction target to triangle ratio with a ratio of 50%. 
+    sgHighDensityMeshReductionSettings.SetStopCondition( Simplygon.EStopCondition_All )
+    sgHighDensityMeshReductionSettings.SetOnScreenSizeEnabled( False )
+    sgHighDensityMeshReductionSettings.SetMaxDeviationEnabled( False )
+    sgHighDensityMeshReductionSettings.SetTriangleCountEnabled( False )
+    sgHighDensityMeshReductionSettings.SetTriangleRatioEnabled( True )
+    sgHighDensityMeshReductionSettings.SetTriangleRatio( 0.5 )
+    
+    # Set Isotropicity (a value that goes from 0 to 1). A high value creates a more isotropic output 
+    # with more equilateral triangles, at the cost of reduced physical resemblance to the original. 
+    sgHighDensityMeshReductionSettings.SetIsotropicity( 0.2 )
     
     # Start the reduction pipeline.     
     print("Start the reduction pipeline.")
